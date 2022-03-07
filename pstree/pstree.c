@@ -11,8 +11,9 @@
 
 struct process_state {
 	int pid;
-	int ppid;
 	char *name;
+	char state;
+	int ppid;
 };
 
 struct node {
@@ -105,7 +106,11 @@ void getProcessState() {
 				strcat(path, "/stat");
 				f = fopen(path, "r");
 				if (f) {
-					printf("%s\n", path);
+					struct process_state node;
+					fscanf(f, "%d %s %c %d",
+							&node.pid, node.name, &node.state, &node.ppid);
+					printf("%d %s %c %d", 
+							node.pid, node.name, node.state, node.ppid);
 
 					fclose(f);
 				}
