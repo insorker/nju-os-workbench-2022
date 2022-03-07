@@ -42,29 +42,31 @@ int main(int argc, char *argv[]) {
 	struct node *head;
 
 	head = (struct node *)malloc(sizeof(struct node));
+	node_init(head);
+	getProcessState(head);
 
 	if (argc == 1) {
-		node_init(head);
-		getProcessState(head);
-		if (head == NULL)
-			printf("Hello\n");
+		if (head != NULL)
+			printf("%s\n", head->ps.name);
 		printProcess(head);
-		node_destroy(head);
+	}
+	else {
+		while ((opt = getopt_long(argc, argv, "pnV", longopts, &option_index)) != -1) {
+			switch (opt) {
+			case 'p':
+				break;
+			case 'n':
+				break;
+			case 'V':
+				break;
+			default:
+				exit(1);
+			}
+			printf("%c\n", opt);
+		}
 	}
 
-	while ((opt = getopt_long(argc, argv, "pnV", longopts, &option_index)) != -1) {
-		switch (opt) {
-		case 'p':
-			break;
-		case 'n':
-			break;
-		case 'V':
-			break;
-		default:
-			exit(1);
-		}
-		printf("%c\n", opt);
-	}
+	node_destroy(head);
 
 	return 0;
 }
