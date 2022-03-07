@@ -135,10 +135,10 @@ void getProcessState(struct node *head) {
 					node_init(node);
 					fscanf(f, "%d%s%d",
 							&node->ps.pid, node->ps.name, &node->ps.ppid);
-					node_add(node, head);
+					/* node_add(node, head); */
 
-					/* printf("%d %s %d\n", */
-							/* node->ps.pid, node->ps.name, node->ps.ppid); */
+					printf("%d %s %d\n",
+							node->ps.pid, node->ps.name, node->ps.ppid);
 
 					fclose(f);
 				}
