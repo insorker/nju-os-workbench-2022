@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
 
 	if (argc == 1) {
 		if (head != NULL)
-			printf("%s\n", head->ps.name);
+			printf("%s\n", head->child->ps.name);
 		printProcess(head);
 	}
 	else {
