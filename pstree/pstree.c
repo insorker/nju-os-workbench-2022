@@ -12,7 +12,6 @@
 struct process_state {
 	int pid;
 	char name[30];
-	char state;
 	int ppid;
 };
 
@@ -23,6 +22,7 @@ struct node {
 } *head;
 void node_init();
 int node_add(struct node *sn, struct node *fn);
+void node_destroy(struct node *fn);
 
 static struct option longopts[] = {
 	{ "show-pids",		0, NULL, 'p' },
@@ -40,7 +40,9 @@ int main(int argc, char *argv[]) {
 	int option_index;
 
 	if (argc == 1) {
+		node_init();
 		getProcessState();
+		node_destroy(head);
 	}
 
 	while ((opt = getopt_long(argc, argv, "pnV", longopts, &option_index)) != -1) {
@@ -92,6 +94,16 @@ int node_add(struct node *sn, struct node *fn) {
 	}
 }
 
+void node_destroy(struct node *fn) {
+	struct node *p = fn->child;
+
+	if (p != NULL)
+		for ( ; p != NULL; p = p->next)
+			node_destroy(p);
+	
+	free(fn);
+}
+
 void getProcessState() {
 	DIR *d;
 	struct dirent *dir;
@@ -106,12 +118,15 @@ void getProcessState() {
 				strcat(path, "/stat");
 				f = fopen(path, "r");
 				if (f) {
-					struct process_state node;
+					struct node *node;
+					node = (struct node *)malloc(sizeof(struct node));
+
 					fscanf(f, "%d%s%d",
-							&node.pid, node.name, &node.ppid);
-					/* printf("%c\n", node.state); */
+							&node->ps.pid, node->ps.name, &node->ps.ppid);
+					node_add(node, head);
+
 					printf("%d %s %d\n",
-							node.pid, node.name, node.ppid);
+							node->ps.pid, node->ps.name, node->ps.ppid);
 
 					fclose(f);
 				}
