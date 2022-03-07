@@ -69,7 +69,8 @@ void getProcessState() {
 		while ((dir = readdir(d)) != NULL) {
 			if (isNumber(dir->d_name)) {
 				strcpy(path + 6, dir->d_name);
-				printf("%s\n", path);
+				f = fopen(path, "r");
+				fclose(f);
 			}
 		}
 		closedir(d);
