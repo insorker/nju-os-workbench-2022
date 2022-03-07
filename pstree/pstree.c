@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
 		}
 		printf("%c\n", opt);
 	}
-	printf("%c\n", opt); 
+	printf("%d\n", opt); 
 
 	return 0;
 }
