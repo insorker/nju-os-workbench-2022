@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <getopt.h>
 #include <dirent.h>
+#include <ctype.h>
 #include <assert.h>
 
 #define VERSION "Version: 0.0.1\n"
@@ -20,6 +21,7 @@ static struct option longopts[] = {
 	{ 0,				0, 0,	 0   }
 };
 
+int isNumber(char *str);
 void getProcessState();
 void printVersion();
 
@@ -49,6 +51,13 @@ int main(int argc, char *argv[]) {
 	return 0;
 }
 
+int isNumber(char *str) {
+	for (char *c = str; *c != '\0'; c ++ )
+		if (isdigit(*c) == 0)
+			return 0;
+	return 1;
+}
+
 void getProcessState() {
 	DIR *d;
 	struct dirent *dir;
@@ -56,7 +65,8 @@ void getProcessState() {
 	d = opendir("/proc");
 	if (d) {
 		while ((dir = readdir(d)) != NULL) {
-			printf("%s\n", dir->d_name);
+			if (isNumber(dir->d_name))
+				printf("%s\n", dir->d_name);
 		}
 		closedir(d);
 	}
