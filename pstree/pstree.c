@@ -4,6 +4,7 @@
 #include <getopt.h>
 #include <dirent.h>
 #include <ctype.h>
+#include <string.h>
 #include <assert.h>
 
 #define VERSION "Version: 0.0.1\n"
@@ -42,7 +43,6 @@ int main(int argc, char *argv[]) {
 		case 'V':
 			break;
 		default:
-			fprintf(stderr, "Error\n");
 			exit(1);
 		}
 		printf("%c\n", opt);
@@ -61,12 +61,16 @@ int isNumber(char *str) {
 void getProcessState() {
 	DIR *d;
 	struct dirent *dir;
+	FILE *f;
+	char path[20] = "/proc/";
 
 	d = opendir("/proc");
 	if (d) {
 		while ((dir = readdir(d)) != NULL) {
-			if (isNumber(dir->d_name))
-				printf("%s\n", dir->d_name);
+			if (isNumber(dir->d_name)) {
+				strcat(path + 6, dir->d_name);
+				printf("%s\n", path);
+			}
 		}
 		closedir(d);
 	}
