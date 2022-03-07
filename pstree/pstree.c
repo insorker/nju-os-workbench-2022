@@ -33,6 +33,7 @@ static struct option longopts[] = {
 
 int isNumber(char *str);
 void getProcessState(struct node *head);
+void printProcess(struct node *head);
 void printVersion();
 
 int main(int argc, char *argv[]) {
@@ -45,6 +46,7 @@ int main(int argc, char *argv[]) {
 	if (argc == 1) {
 		node_init(head);
 		getProcessState(head);
+		printProcess(head);
 		node_destroy(head);
 	}
 
@@ -131,8 +133,8 @@ void getProcessState(struct node *head) {
 							&node->ps.pid, node->ps.name, &node->ps.ppid);
 					node_add(node, head);
 
-					printf("%d %s %d\n",
-							node->ps.pid, node->ps.name, node->ps.ppid);
+					/* printf("%d %s %d\n", */
+							/* node->ps.pid, node->ps.name, node->ps.ppid); */
 
 					fclose(f);
 				}
@@ -143,6 +145,17 @@ void getProcessState(struct node *head) {
 		}
 		closedir(d);
 	}
+}
+
+void printProcess(struct node *n) {
+	struct node *p = n->child;
+	if (p == NULL) {
+		fprintf(stdout, "%s", n->ps.name);
+		return;
+	}
+
+	for ( ; p != NULL; p = p->next)
+		printProcess(p);
 }
 
 void printVersion() {
