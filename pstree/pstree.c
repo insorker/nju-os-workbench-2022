@@ -20,7 +20,7 @@ struct node {
 	struct node *next;
 	struct node *child;
 } *head;
-void node_init();
+void node_init(struct node *n);
 int node_add(struct node *sn, struct node *fn);
 void node_destroy(struct node *fn);
 
@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
 	int option_index;
 
 	if (argc == 1) {
-		node_init();
+		node_init(head);
 		getProcessState();
 		node_destroy(head);
 	}
@@ -69,8 +69,11 @@ int isNumber(char *str) {
 	return 1;
 }
 
-void node_init() {
-	head = NULL;
+void node_init(struct node *n) {
+	n = (struct node *)malloc(sizeof(struct node));
+	n->ps = (struct process_state){ 0, { }, 0 };
+	n->child = NULL;
+	n->next = NULL;
 }
 
 int node_add(struct node *sn, struct node *fn) {
@@ -119,8 +122,8 @@ void getProcessState() {
 				f = fopen(path, "r");
 				if (f) {
 					struct node *node;
-					node = (struct node *)malloc(sizeof(struct node));
 
+					node_init(node);
 					fscanf(f, "%d%s%d",
 							&node->ps.pid, node->ps.name, &node->ps.ppid);
 					node_add(node, head);
