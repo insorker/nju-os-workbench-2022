@@ -107,11 +107,11 @@ void getProcessState() {
 				f = fopen(path, "r");
 				if (f) {
 					struct process_state node;
-					fscanf(f, "%d%s%c%d",
-							&node.pid, node.name, &node.state, &node.ppid);
+					fscanf(f, "%d%s%d",
+							&node.pid, node.name, &node.ppid);
 					/* printf("%c\n", node.state); */
-					printf("%d %s %c %d\n",
-							node.pid, node.name, node.state, node.ppid);
+					printf("%d %s %d\n",
+							node.pid, node.name, node.ppid);
 
 					fclose(f);
 				}
