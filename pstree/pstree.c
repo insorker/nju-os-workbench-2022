@@ -46,6 +46,8 @@ int main(int argc, char *argv[]) {
 	if (argc == 1) {
 		node_init(head);
 		getProcessState(head);
+		if (head == NULL)
+			printf("Hello\n");
 		printProcess(head);
 		node_destroy(head);
 	}
