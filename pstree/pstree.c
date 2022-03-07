@@ -11,7 +11,7 @@
 
 struct process_state {
 	int pid;
-	char *name;
+	char name[30];
 	char state;
 	int ppid;
 };
