@@ -109,8 +109,9 @@ void getProcessState() {
 					struct process_state node;
 					fscanf(f, "%d%s%c%d",
 							&node.pid, node.name, &node.state, &node.ppid);
-					printf("%d %s %c %d\n",
-							node.pid, node.name, node.state, node.ppid);
+					printf("%c\n", node.state);
+					/* printf("%d %s %c %d\n", */
+							/* node.pid, node.name, node.state, node.ppid); */
 
 					fclose(f);
 				}
