@@ -15,6 +15,14 @@ struct process_state {
 	char *name;
 };
 
+struct node {
+	struct process_state ps;
+	struct node *next;
+	struct node *child;
+} *head;
+void node_init();
+int node_add(struct node *sn, struct node *fn);
+
 static struct option longopts[] = {
 	{ "show-pids",		0, NULL, 'p' },
 	{ "numeric-sort",	0, NULL, 'n' },
@@ -58,19 +66,52 @@ int isNumber(char *str) {
 	return 1;
 }
 
+void node_init() {
+	head = NULL;
+}
+
+int node_add(struct node *sn, struct node *fn) {
+	struct node *p = fn->child;
+
+	if (sn->ps.ppid == fn->ps.pid) {
+		if (p == NULL)
+			p = sn;
+		else {
+			while (p->next != NULL)
+				p = p->next;
+			p->next = sn;
+		}
+		return 1;
+	}
+	else {
+		for ( ; p != NULL; p = p->next)
+			if (node_add(sn, p))
+				return 1;
+		return 0;
+	}
+}
+
 void getProcessState() {
 	DIR *d;
 	struct dirent *dir;
 	FILE *f;
-	char path[20] = "/proc/";
+	char path[30] = "/proc/";
 
 	d = opendir("/proc");
 	if (d) {
 		while ((dir = readdir(d)) != NULL) {
 			if (isNumber(dir->d_name)) {
 				strcpy(path + 6, dir->d_name);
+				strcat(path, "stat");
 				f = fopen(path, "r");
-				fclose(f);
+				if (f) {
+					printf("%s\n", path);
+
+					fclose(f);
+				}
+				else {
+					fprintf(stderr, "Open Failed\n");
+				}
 			}
 		}
 		closedir(d);
