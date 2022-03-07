@@ -102,7 +102,7 @@ void getProcessState() {
 		while ((dir = readdir(d)) != NULL) {
 			if (isNumber(dir->d_name)) {
 				strcpy(path + 6, dir->d_name);
-				strcat(path, "stat");
+				strcat(path, "/stat");
 				f = fopen(path, "r");
 				if (f) {
 					printf("%s\n", path);
