@@ -124,6 +124,7 @@ void getProcessState(struct node *head) {
 				f = fopen(path, "r");
 				if (f) {
 					struct node *node;
+					node = (struct node *)malloc(sizeof(struct node));
 
 					node_init(node);
 					fscanf(f, "%d%s%d",
