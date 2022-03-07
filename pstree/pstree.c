@@ -19,7 +19,7 @@ struct node {
 	struct process_state ps;
 	struct node *next;
 	struct node *child;
-} *head;
+};
 void node_init(struct node *n);
 int node_add(struct node *sn, struct node *fn);
 void node_destroy(struct node *fn);
@@ -32,16 +32,19 @@ static struct option longopts[] = {
 };
 
 int isNumber(char *str);
-void getProcessState();
+void getProcessState(struct node *head);
 void printVersion();
 
 int main(int argc, char *argv[]) {
 	char opt;
 	int option_index;
+	struct node *head;
+
+	head = (struct node *)malloc(sizeof(struct node));
 
 	if (argc == 1) {
 		node_init(head);
-		getProcessState();
+		getProcessState(head);
 		node_destroy(head);
 	}
 
@@ -70,7 +73,6 @@ int isNumber(char *str) {
 }
 
 void node_init(struct node *n) {
-	n = (struct node *)malloc(sizeof(struct node));
 	n->ps = (struct process_state){ 0, { }, 0 };
 	n->child = NULL;
 	n->next = NULL;
@@ -107,7 +109,7 @@ void node_destroy(struct node *fn) {
 	free(fn);
 }
 
-void getProcessState() {
+void getProcessState(struct node *head) {
 	DIR *d;
 	struct dirent *dir;
 	FILE *f;
