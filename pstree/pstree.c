@@ -68,8 +68,7 @@ void getProcessState() {
 	if (d) {
 		while ((dir = readdir(d)) != NULL) {
 			if (isNumber(dir->d_name)) {
-				char *tmp = path + 6;
-				strcat(tmp, dir->d_name);
+				strcpy(path + 6, dir->d_name);
 				printf("%s\n", path);
 			}
 		}
