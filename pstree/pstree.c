@@ -91,7 +91,8 @@ int node_add(struct node *sn, struct node *fn) {
 			fn->child = sn;
 		else {
 			for (p = fn->child; p->next != NULL; p = p->next)
-				p->next = sn;
+				;
+			p->next = sn;
 		}
 		return 1;
 	}
@@ -155,7 +156,6 @@ void getProcessState(struct node *head) {
 void printProcess(struct node *n) {
 	if (n->ps.pid != 0)
 		fprintf(stdout, "%d %s\n", n->ps.pid, n->ps.name);
-
 
 	for (struct node *p = n->child; p != NULL; p = p->next)
 		printProcess(p);
