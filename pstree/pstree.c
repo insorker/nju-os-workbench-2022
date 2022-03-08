@@ -47,8 +47,8 @@ int main(int argc, char *argv[]) {
 	getProcessState(head);
 
 	if (argc == 1) {
-		if (head->child != NULL)
-			printf("%s\n", head->child->ps.name);
+		if (head->next != NULL)
+			printf("%s\n", head->next->ps.name);
 		printProcess(head);
 	}
 	else {
@@ -131,8 +131,8 @@ void getProcessState(struct node *head) {
 				f = fopen(path, "r");
 				if (f) {
 					struct node *node;
-					node = (struct node *)malloc(sizeof(struct node));
 
+					node = (struct node *)malloc(sizeof(struct node));
 					node_init(node);
 					fscanf(f, "%d (%[^)]) %c %d",
 							&node->ps.pid, node->ps.name, &node->ps.state, &node->ps.ppid);
