@@ -12,6 +12,7 @@
 struct process_state {
 	int pid;
 	char name[30];
+	char state;
 	int ppid;
 };
 
@@ -133,8 +134,8 @@ void getProcessState(struct node *head) {
 					node = (struct node *)malloc(sizeof(struct node));
 
 					node_init(node);
-					fscanf(f, "%d %s %d",
-							&node->ps.pid, node->ps.name, &node->ps.ppid);
+					fscanf(f, "%d %s %c %d",
+							&node->ps.pid, node->ps.name, &node->ps.state, &node->ps.ppid);
 					/* node_add(node, head); */
 
 					printf("%d %s %d\n",
