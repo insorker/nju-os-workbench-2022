@@ -134,7 +134,7 @@ void getProcessState(struct node *head) {
 					node = (struct node *)malloc(sizeof(struct node));
 
 					node_init(node);
-					fscanf(f, "%d (%[^)] %c %d",
+					fscanf(f, "%d (%[^)]) %c %d",
 							&node->ps.pid, node->ps.name, &node->ps.state, &node->ps.ppid);
 					/* node_add(node, head); */
 
