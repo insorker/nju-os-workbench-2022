@@ -90,9 +90,8 @@ int node_add(struct node *sn, struct node *fn) {
 		if (fn->child == NULL)
 			fn->child = sn;
 		else {
-			while (fn->child->next != NULL)
-				fn->child = fn->child->next;
-			fn->child->next = sn;
+			for (struct node *p = fn->child; p->next != NULL; p = p->next)
+				p->next = sn;
 		}
 		return 1;
 	}
