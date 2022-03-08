@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
 
 	if (argc == 1) {
 		if (head->next != NULL)
-			printf("%s\n", head->next->ps.name);
+			printf("=== %s\n", head->next->ps.name);
 		printProcess(head);
 	}
 	else {
