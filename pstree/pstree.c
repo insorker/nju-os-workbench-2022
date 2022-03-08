@@ -47,7 +47,6 @@ int main(int argc, char *argv[]) {
 	getProcessState(head);
 
 	if (argc == 1) {
-			printf("%s\n", head->child->ps.name);
 		printProcess(head);
 	}
 	else {
@@ -154,13 +153,11 @@ void getProcessState(struct node *head) {
 }
 
 void printProcess(struct node *n) {
-	struct node *p = n->child;
-	if (p == NULL) {
-		fprintf(stdout, "%s", n->ps.name);
-		return;
-	}
+	if (n->ps.pid != 0)
+		fprintf(stdout, "%d %s\n", n->ps.pid, n->ps.name);
 
-	for ( ; p != NULL; p = p->next)
+
+	for (struct node *p = n->child; p != NULL; p = p->next)
 		printProcess(p);
 }
 
