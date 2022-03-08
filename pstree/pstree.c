@@ -139,8 +139,8 @@ void getProcessState(struct node *head) {
 							&node->ps.pid, node->ps.name, &node->ps.state, &node->ps.ppid);
 					node_add(node, head);
 
-					printf("%d %s %d\n",
-							node->ps.pid, node->ps.name, node->ps.ppid);
+					/* printf("%d %s %d\n", */
+							/* node->ps.pid, node->ps.name, node->ps.ppid); */
 
 					fclose(f);
 				}
