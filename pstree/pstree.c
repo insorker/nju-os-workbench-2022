@@ -47,8 +47,7 @@ int main(int argc, char *argv[]) {
 	getProcessState(head);
 
 	if (argc == 1) {
-		if (head->child != NULL)
-			printf("=== %s\n", head->child->ps.name);
+			printf("%s\n", head->child->ps.name);
 		printProcess(head);
 	}
 	else {
