@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
 	getProcessState(head);
 
 	if (argc == 1) {
-		if (head != NULL)
+		if (head->child != NULL)
 			printf("%s\n", head->child->ps.name);
 		printProcess(head);
 	}
@@ -136,7 +136,7 @@ void getProcessState(struct node *head) {
 					node_init(node);
 					fscanf(f, "%d (%[^)]) %c %d",
 							&node->ps.pid, node->ps.name, &node->ps.state, &node->ps.ppid);
-					/* node_add(node, head); */
+					node_add(node, head);
 
 					printf("%d %s %d\n",
 							node->ps.pid, node->ps.name, node->ps.ppid);
