@@ -86,21 +86,19 @@ void node_init(struct node *n) {
 }
 
 int node_add(struct node *sn, struct node *fn) {
-	struct node *p = fn->child;
-
 	if (sn->ps.ppid == fn->ps.pid) {
-		if (p == NULL)
-			p = sn;
+		if (fn->child == NULL)
+			fn->child = sn;
 		else {
-			while (p->next != NULL)
-				p = p->next;
-			p->next = sn;
+			while (fn->child->next != NULL)
+				fn->child = fn->child->next;
+			fn->child->next = sn;
 		}
 		return 1;
 	}
 	else {
-		for ( ; p != NULL; p = p->next)
-			if (node_add(sn, p))
+		for ( ; fn->child != NULL; fn->child = fn->child->next)
+			if (node_add(sn, fn->child))
 				return 1;
 		return 0;
 	}
@@ -110,8 +108,11 @@ void node_destroy(struct node *fn) {
 	struct node *p = fn->child;
 
 	if (p != NULL)
-		for ( ; p != NULL; p = p->next)
-			node_destroy(p);
+		for ( ; p != NULL; ) {
+			struct node *tmp = p;
+			p = p->next;
+			node_destroy(tmp);
+		}
 	
 	free(fn);
 }
