@@ -86,18 +86,20 @@ void node_init(struct node *n) {
 }
 
 int node_add(struct node *sn, struct node *fn) {
+	struct node *p;
+	
 	if (sn->ps.ppid == fn->ps.pid) {
 		if (fn->child == NULL)
 			fn->child = sn;
 		else {
-			for (struct node *p = fn->child; p->next != NULL; p = p->next)
+			for (p = fn->child; p->next != NULL; p = p->next)
 				p->next = sn;
 		}
 		return 1;
 	}
 	else {
-		for ( ; fn->child != NULL; fn->child = fn->child->next)
-			if (node_add(sn, fn->child))
+		for (p = fn->child; p != NULL; p = p->next)
+			if (node_add(sn, p))
 				return 1;
 		return 0;
 	}
