@@ -1,0 +1,16 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+KEYNAME	keyboard.c	3;"	d	file:
+SIDE	video.c	3;"	d	file:
+draw_tile	video.c	/^static void draw_tile(int x, int y, int w, int h, uint32_t color) {$/;"	f	file:
+h	video.c	/^static int w, h;$/;"	v	file:
+init	video.c	/^static void init() {$/;"	f	file:
+key_names	keyboard.c	/^static const char *key_names[] = {$/;"	v	file:
+main	game.c	/^int main(const char *args) {$/;"	f
+print_key	keyboard.c	/^void print_key() {$/;"	f
+splash	video.c	/^void splash() {$/;"	f
+w	video.c	/^static int w, h;$/;"	v	file:
