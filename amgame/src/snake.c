@@ -29,7 +29,7 @@ int sk_conflict(Snake *sk, Direction dir) {
 
 	// conflict with bound
 	if (x < 0 || x * GRID_SIZE >= w - SNAKE_SIZE ||
-		y < 0 || y * GRID_SIZE >= w - SNAKE_SIZE)
+		y < 0 || y * GRID_SIZE >= h - SNAKE_SIZE)
 		return 2;
 
 	if (id == 0) return 0;
