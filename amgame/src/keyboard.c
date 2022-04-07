@@ -16,8 +16,8 @@ void get_key(Direction *dir) {
 	switch (*key_names[event.keycode]) {
 	case 'W': dir->x = NONE, dir->y = UP;    break;
 	case 'S': dir->x = NONE, dir->y = DOWN;  break;
-	case 'A': dir->x = LEFT, dir->y = DOWN;  break;
-	case 'D': dir->x = RIGHT, dir->y = DOWN; break;
+	case 'A': dir->x = LEFT, dir->y = NONE;  break;
+	case 'D': dir->x = RIGHT, dir->y = NONE; break;
 	default: break;
 	}
 	printf(key_names[event.keycode]);
