@@ -2,6 +2,8 @@
 #include <snake.h>
 #include <com.h>
 
+extern int state;
+
 static void draw_rect(int x, int y, int w, int h, uint32_t color) {
   uint32_t pixels[w * h]; // WARNING: large stack-allocated memory
   AM_GPU_FBDRAW_T event = {
@@ -29,15 +31,15 @@ void draw_snake(Snake *sk) {
 	}
 }
 
-void draw_snake_move(Snake *sk, Direction dir) {
+void draw_snake_move(Snake *sk, Direction dir, int *game_state) {
 	switch (sk_conflict(sk, dir)) {
 	case 1:
 		// not change dir
 		break;
 	case 2:
 		// game failed
+		*game_state = 1;
 		printf("You Failed\n");
-		halt(0);
 		return;
 	default:
 		sk->dir = dir;

@@ -11,7 +11,8 @@ static const char *key_names[] = {
 void get_key(Direction *dir) {
   AM_INPUT_KEYBRD_T event = { .keycode = AM_KEY_NONE };
   ioe_read(AM_INPUT_KEYBRD, &event);
-  if (event.keycode != AM_KEY_NONE && event.keydown) {
+  if (event.keydown && event.keycode == AM_KEY_ESCAPE) halt(0);
+  if (event.keydown && event.keycode != AM_KEY_NONE) {
     printf("Key pressed: ");
 	switch (*key_names[event.keycode]) {
 	case 'W': dir->x = NONE, dir->y = UP;    break;

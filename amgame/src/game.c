@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #define FPS 30
+static int game_state = 0;
 
 // Operating system is a C program!
 int main(const char *args) {
@@ -20,15 +21,18 @@ int main(const char *args) {
 
 	draw_snake(&sk);
 
-	printf("Press any key to see its key code...\n");
 	while (1) {
+		if (game_state != 0) {
+			game_state = 0;
+			sk_init(&sk);
+		}
+
 		while (curr_frame < next_frame) {
 			get_key(&dir);
 			curr_frame = io_read(AM_TIMER_UPTIME).us / (1000000 / FPS);
-			/* printf("%d\n", curr_frame); */
 		}
 		if (curr_frame % 15 == 0) {
-			draw_snake_move(&sk, dir);
+			draw_snake_move(&sk, dir, &game_state);
 		}
 
 		next_frame += 1;
