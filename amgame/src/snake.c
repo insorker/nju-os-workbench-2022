@@ -56,8 +56,8 @@ void sk_move(Snake *sk, Direction dir) {
 	}
 
 	for (int i = sk->size - 1; i >= 0; i--) {
-		sk->body[i].pos.x += sk->body[i].dir.x;
-		sk->body[i].pos.y += sk->body[i].dir.y;
+		sk->body[i].pos.x = sk->body[i + 1].dir.x;
+		sk->body[i].pos.y = sk->body[i + 1].dir.y;
 		sk->body[i].dir.x = sk->body[i + 1].dir.x;
 		sk->body[i].dir.y = sk->body[i + 1].dir.y;
 	}
