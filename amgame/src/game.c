@@ -25,6 +25,7 @@ int main(const char *args) {
 		while (curr_frame < next_frame) {
 			get_key(&dir);
 			curr_frame = io_read(AM_TIMER_UPTIME).us / (1000000 / FPS);
+			printf("%d\n", curr_frame);
 		}
 		draw_snake_move(&sk, dir);
 
