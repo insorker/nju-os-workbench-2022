@@ -14,10 +14,10 @@ void get_key(Direction *dir) {
   if (event.keycode != AM_KEY_NONE && event.keydown) {
     printf("Key pressed: ");
 	switch (*key_names[event.keycode]) {
-	case 'W': dir->x = UP,   dir->y = NONE;  break;
-	case 'S': dir->x = DOWN, dir->y = NONE;  break;
-	case 'A': dir->x = NONE, dir->y = LEFT;  break;
-	case 'D': dir->x = NONE, dir->y = RIGHT; break;
+	case 'W': dir->x = NONE, dir->y = UP;    break;
+	case 'S': dir->x = NONE, dir->y = DOWN;  break;
+	case 'A': dir->x = LEFT, dir->y = DOWN;  break;
+	case 'D': dir->x = RIGHT, dir->y = DOWN; break;
 	default: break;
 	}
 	printf(key_names[event.keycode]);
