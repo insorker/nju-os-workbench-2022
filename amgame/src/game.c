@@ -11,7 +11,7 @@ int main(const char *args) {
 
 	Snake sk;
 	Direction dir;
-	sk_init(&sk);  
+	sk_init(&sk);
 	draw_snake(&sk);
 
 	printf("Press any key to see its key code...\n");
