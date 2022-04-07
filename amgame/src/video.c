@@ -35,12 +35,12 @@ void draw_snake_move(Snake *sk, Direction dir) {
 		sk->body[1].pos.y,
 		GRID_COLOR
 	);
-	/* sk_move(sk, dir); */
-	/* draw_snake_body( */
-	/*     sk->body[sk->size].pos.x, */
-	/*     sk->body[sk->size].pos.y, */
-	/*     SNAKE_COLOR */
-	/* ); */
+	sk_move(sk, dir);
+	draw_snake_body(
+		sk->body[sk->size - 1].pos.x,
+		sk->body[sk->size - 1].pos.y,
+		SNAKE_COLOR
+	);
 }
 
 /* static void draw_tile(int x, int y, int w, int h, uint32_t color) { */
