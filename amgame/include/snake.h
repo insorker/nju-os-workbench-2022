@@ -1,7 +1,7 @@
 #ifndef SNAKE_H
 #define SNAKE_H
 
-#define SNAKE_INIT_SIZE 1
+#define SNAKE_INIT_SIZE 3
 #define SNAKE_MAX_SIZE  10
 
 typedef enum { NONE=0, UP=-1, DOWN=1, LEFT=-1, RIGHT=1 } STEP;
