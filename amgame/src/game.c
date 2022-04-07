@@ -23,8 +23,10 @@ int main(const char *args) {
 
 	while (1) {
 		if (game_state != 0) {
+			draw_snake_clear(&sk);
 			game_state = 0;
 			sk_init(&sk);
+			dir = sk.dir;
 		}
 
 		while (curr_frame < next_frame) {

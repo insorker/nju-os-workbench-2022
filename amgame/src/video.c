@@ -57,3 +57,13 @@ void draw_snake_move(Snake *sk, Direction dir, int *game_state) {
 		SNAKE_COLOR
 	);
 }
+
+void draw_snake_clear(Snake *sk) {
+	for (int i = 0; i < sk->size; i++) {
+		draw_snake_body(
+			sk->body[i].pos.x,
+			sk->body[i].pos.y,
+			GRID_COLOR
+		);
+	}
+}

@@ -9,3 +9,4 @@ void get_key(Direction *dir);
 
 void draw_snake(Snake *sk);
 void draw_snake_move(Snake *sk, Direction dir, int *game_state);
+void draw_snake_clear(Snake *sk);
