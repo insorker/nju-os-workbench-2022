@@ -1,6 +1,8 @@
 #include <game.h>
 #include <stdio.h>
 
+#define FPS 30
+
 // Operating system is a C program!
 int main(const char *args) {
 	ioe_init();
@@ -9,6 +11,8 @@ int main(const char *args) {
 	/* puts(args); // make run mainargs=xxx */
 	/* puts("\"\n"); */
 
+	int next_frame = 0;
+	int curr_frame = 0;
 	Snake sk;
 	Direction dir;
 	sk_init(&sk);
@@ -18,8 +22,13 @@ int main(const char *args) {
 
 	printf("Press any key to see its key code...\n");
 	while (1) {
-		get_key(&dir);
+		while (curr_frame < next_frame) {
+			get_key(&dir);
+			curr_frame = io_read(AM_TIMER_UPTIME).us / (1000000 / FPS);
+		}
 		draw_snake_move(&sk, dir);
+
+		next_frame += 1000000 / FPS;
 	}
 	return 0;
 }
