@@ -31,8 +31,8 @@ void draw_snake(Snake *sk) {
 
 void draw_snake_move(Snake *sk, Direction dir) {
 	draw_snake_body(
-		sk->body[1].pos.x,
-		sk->body[1].pos.y,
+		sk->body[0].pos.x,
+		sk->body[0].pos.y,
 		GRID_COLOR
 	);
 	sk_move(sk, dir);
