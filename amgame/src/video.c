@@ -32,13 +32,15 @@ void draw_snake(Snake *sk) {
 void draw_snake_move(Snake *sk, Direction dir) {
 	switch (sk_conflict(sk, dir)) {
 	case 1:
-		return;
+		// not change dir
+		break;
 	case 2:
+		// game failed
 		printf("You Failed\n");
 		halt(0);
 		return;
-		// game failed
 	default:
+		sk->dir = dir;
 		break;
 	}
 	draw_snake_body(
