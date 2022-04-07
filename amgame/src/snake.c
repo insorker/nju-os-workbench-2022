@@ -19,7 +19,7 @@ void sk_init(Snake *sk) {
 	for (int i = 0; i < sk->size; i++) {
 		sk->body[i].pos = (Position){ 0, i };
 	}
-	sk->dir = (Direction){ 0, NONE };
+	sk->dir = (Direction){ NONE, DOWN };
 }
 
 int sk_conflict(Snake *sk, Direction dir) {
