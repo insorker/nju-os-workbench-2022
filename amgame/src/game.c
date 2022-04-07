@@ -12,12 +12,14 @@ int main(const char *args) {
 	Snake sk;
 	Direction dir;
 	sk_init(&sk);
+	dir = sk.body[0].dir;
+
 	draw_snake(&sk);
 
 	printf("Press any key to see its key code...\n");
 	while (1) {
 		get_key(&dir);
-		/* draw_snake_move(&sk, dir); */
+		draw_snake_move(&sk, dir);
 	}
 	return 0;
 }
