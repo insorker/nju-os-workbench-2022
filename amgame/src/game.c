@@ -10,14 +10,14 @@ int main(const char *args) {
 	/* puts("\"\n"); */
 
 	Snake sk;
-	/* Direction dir; */
+	Direction dir;
 	sk_init(&sk);  
 	draw_snake(&sk);
 
 	printf("Press any key to see its key code...\n");
 	while (1) {
-		print_key();
-		/* draw_snake_move(&sk, dir);  */
+		get_key(&dir);
+		draw_snake_move(&sk, dir);
 	}
 	return 0;
 }
