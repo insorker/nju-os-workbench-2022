@@ -4,9 +4,9 @@
 #define FPS 30
 static int game_state = 0;
 
-void init(Snake *sk, Direction dir) {
+void init(Snake *sk, Direction *dir) {
 	sk_init(sk);
-	dir = sk->dir;
+	*dir = sk->dir;
 	draw_snake(sk);
 }
 
@@ -23,13 +23,13 @@ int main(const char *args) {
 	Snake sk;
 	Direction dir;
 
-	init(&sk, dir);
+	init(&sk, &dir);
 
 	while (1) {
 		if (game_state != 0) {
 			draw_snake_clear(&sk);
 			game_state = 0;
-			init(&sk, dir);
+			init(&sk, &dir);
 		}
 
 		while (curr_frame < next_frame) {
