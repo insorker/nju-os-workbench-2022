@@ -24,6 +24,7 @@ typedef struct Snake {
 } Snake;
 
 void sk_init(Snake *sk);
+int sk_conflict(Snake *sk, Direction dir);
 void sk_move(Snake *sk);
 
 #endif

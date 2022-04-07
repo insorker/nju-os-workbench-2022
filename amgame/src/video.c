@@ -29,7 +29,18 @@ void draw_snake(Snake *sk) {
 	}
 }
 
-void draw_snake_move(Snake *sk) {
+void draw_snake_move(Snake *sk, Direction dir) {
+	switch (sk_conflict(sk, dir)) {
+	case 1:
+		return;
+	case 2:
+		printf("You Failed\n");
+		halt(0);
+		return;
+		// game failed
+	default:
+		break;
+	}
 	draw_snake_body(
 		sk->body[0].pos.x,
 		sk->body[0].pos.y,
