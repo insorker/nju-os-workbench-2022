@@ -5,7 +5,7 @@
 #include <snake.h>
 
 // void splash();
-void get_key(Direction *dir);
+void get_key(Snake *sk);
 
 void draw_snake(Snake *sk);
-void draw_snake_move(Snake *sk, Direction dir);
+void draw_snake_move(Snake *sk);

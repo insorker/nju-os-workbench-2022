@@ -19,10 +19,11 @@ typedef struct SnakeBody {
 
 typedef struct Snake {
 	int size;
+	Direction dir;
 	SnakeBody body[SNAKE_MAX_SIZE + 1];
 } Snake;
 
 void sk_init(Snake *sk);
-void sk_move(Snake *sk, Direction dir);
+void sk_move(Snake *sk);
 
 #endif
