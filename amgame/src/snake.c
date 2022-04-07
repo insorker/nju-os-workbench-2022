@@ -41,9 +41,9 @@ static int sk_conflict(Snake *sk, int id) {
 }
 
 void sk_move(Snake *sk, Direction dir) {
-	sk->body[sk->size + 1].dir = dir;
+	sk->body[sk->size].dir = dir;
 
-	switch (sk_conflict(sk, sk->size)) {
+	switch (sk_conflict(sk, sk->size - 1)) {
 	case 1:
 		return;
 	case 2:
@@ -57,7 +57,7 @@ void sk_move(Snake *sk, Direction dir) {
 
 	for (int i = sk->size - 1; i >= 0; i--) {
 		sk->body[i].pos.x += sk->body[i].dir.x;
-		sk->body[i].pos.x += sk->body[i].dir.x;
+		sk->body[i].pos.y += sk->body[i].dir.y;
 		sk->body[i].dir.x = sk->body[i + 1].dir.x;
 		sk->body[i].dir.y = sk->body[i + 1].dir.y;
 	}
