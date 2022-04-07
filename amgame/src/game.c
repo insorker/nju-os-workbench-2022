@@ -4,6 +4,12 @@
 #define FPS 30
 static int game_state = 0;
 
+void init(Snake *sk, Direction dir) {
+	sk_init(sk);
+	dir = sk->dir;
+	draw_snake(sk);
+}
+
 // Operating system is a C program!
 int main(const char *args) {
 	ioe_init();
@@ -16,17 +22,14 @@ int main(const char *args) {
 	int curr_frame = 0;
 	Snake sk;
 	Direction dir;
-	sk_init(&sk);
-	dir = sk.dir;
 
-	draw_snake(&sk);
+	init(&sk, dir);
 
 	while (1) {
 		if (game_state != 0) {
 			draw_snake_clear(&sk);
 			game_state = 0;
-			sk_init(&sk);
-			dir = sk.dir;
+			init(&sk, dir);
 		}
 
 		while (curr_frame < next_frame) {
