@@ -27,9 +27,11 @@ int main(const char *args) {
 			curr_frame = io_read(AM_TIMER_UPTIME).us / (1000000 / FPS);
 			printf("%d\n", curr_frame);
 		}
-		draw_snake_move(&sk, dir);
+		if (curr_frame % 60 == 0) {
+			draw_snake_move(&sk, dir);
+		}
 
-		next_frame += 1000000 / FPS;
+		next_frame += 1;
 	}
 	return 0;
 }
