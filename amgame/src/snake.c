@@ -18,7 +18,7 @@ void sk_init(Snake *sk) {
 	sk->size = SNAKE_INIT_SIZE;
 	for (int i = 0; i < sk->size; i++) {
 		sk->body[i].pos = (Position){ 0, i };
-		sk->body[i].dir = (Direction){ NONE, DOWN };
+		/* sk->body[i].dir = (Direction){ NONE, DOWN }; */
 	}
 }
 
