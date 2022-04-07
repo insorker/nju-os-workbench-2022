@@ -17,7 +17,7 @@ int main(const char *args) {
 	printf("Press any key to see its key code...\n");
 	while (1) {
 		get_key(&dir);
-		draw_snake_move(&sk, dir);
+		/* draw_snake_move(&sk, dir); */
 	}
 	return 0;
 }
