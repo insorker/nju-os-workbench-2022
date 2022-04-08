@@ -56,6 +56,7 @@ int main(int argc, char *argv[]) {
 				printProcessTree(head, 0, 1);
 				break;
 			case 'n':
+				printProcessTree(head, 0, 1);
 				break;
 			case 'V':
 				printf("%s\n", VERSION);
