@@ -34,7 +34,8 @@ static struct option longopts[] = {
 
 int isNumber(char *str);
 void buildProcessTree(struct node *head);
-void printProcess(struct node *head, int depth);
+void printProcessTree(struct node *head, int depth, int type);
+void printProcess(struct node *node, int type);
 void printVersion();
 
 int main(int argc, char *argv[]) {
@@ -46,12 +47,13 @@ int main(int argc, char *argv[]) {
 	buildProcessTree(head);
 
 	if (argc == 1) {
-		printProcess(head, 0);
+		printProcessTree(head, 0, 0);
 	}
 	else {
 		while ((opt = getopt_long(argc, argv, "pnV", longopts, &option_index)) != -1) {
 			switch (opt) {
 			case 'p':
+				printProcessTree(head, 0, 1);
 				break;
 			case 'n':
 				break;
@@ -165,17 +167,26 @@ void buildProcessTree(struct node *head) {
 	}
 }
 
-void printProcess(struct node *n, int depth) {
-	if (n->ps.pid != 0) {
-		fprintf(stdout, "%d %s\n", n->ps.pid, n->ps.name);
+void printProcessTree(struct node *node, int depth, int type) {
+	if (node->ps.pid != 0) {
+		printProcess(node, type);
 		depth ++ ;
 	}
 
-	for (struct node *p = n->child; p != NULL; p = p->next) {
+	for (struct node *p = node->child; p != NULL; p = p->next) {
 		for (int i = 0; i < depth; i ++ ) {
-			printf("\t");
+			printf("  ");
 		}
-		printProcess(p, depth);
+		printProcessTree(p, depth);
+	}
+}
+
+void printProcess(struct node *node, int type) {
+	if (type == 0) {
+		fprintf(stdout, "%s\n", node->ps.name);
+	}
+	else if (type == 1) {
+		fprintf(stdout, "%s(%d)\n", node->ps.name, node->ps.pid);
 	}
 }
 
