@@ -34,7 +34,7 @@ static struct option longopts[] = {
 
 int isNumber(char *str);
 void buildProcessTree(struct node *head);
-void printProcess(struct node *head, int depth);
+void printProcess(struct node *head);
 void printVersion();
 
 int main(int argc, char *argv[]) {
@@ -165,17 +165,14 @@ void buildProcessTree(struct node *head) {
 	}
 }
 
-void printProcess(struct node *n, int depth) {
+void printProcess(struct node *n) {
 	if (n->ps.pid != 0) {
 		fprintf(stdout, "%d %s\n", n->ps.pid, n->ps.name);
-		depth ++ ;
 	}
 
 	for (struct node *p = n->child; p != NULL; p = p->next) {
-		for (int i = 0; i < depth; i ++ ) {
-			printf("\t");
-		}
-		printProcess(p, depth);
+		printf("\t");
+		printProcess(p);
 	}
 }
 
