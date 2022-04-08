@@ -177,7 +177,7 @@ void printProcessTree(struct node *node, int depth, int type) {
 		for (int i = 0; i < depth; i ++ ) {
 			printf("  ");
 		}
-		printProcessTree(p, depth);
+		printProcessTree(p, depth, type);
 	}
 }
 
