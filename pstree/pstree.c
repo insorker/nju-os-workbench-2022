@@ -130,7 +130,7 @@ void buildProcessTree(struct node *head) {
 	struct dirent *dir;
 	FILE *f;
 	char path[100] = "/proc/";
-	int pathLen = sizeof(path);
+	int pathLen = 6;
 
 	d = opendir(path);
 	if (!d) {
