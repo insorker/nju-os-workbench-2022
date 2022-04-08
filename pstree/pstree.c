@@ -168,10 +168,10 @@ void buildProcessTree(struct node *head) {
 void printProcess(struct node *n) {
 	if (n->ps.pid != 0) {
 		fprintf(stdout, "%d %s\n", n->ps.pid, n->ps.name);
+		printf("\t");
 	}
 
 	for (struct node *p = n->child; p != NULL; p = p->next) {
-		printf("\t");
 		printProcess(p);
 	}
 }
