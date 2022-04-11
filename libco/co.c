@@ -1,13 +1,14 @@
 #include "co.h"
 #include <stdio.h>
-#include <stdlib.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <setjmp.h>
 #include <string.h>
 #include <assert.h>
+#include <time.h>
 
 #define Assert(x, s) \
-	({ if (!x) { printf("%s", s); assert(x); } })
+	do { if (!x) { printf("> co assert: %s", s); assert(x); } } while(0)
 
 static inline void stack_switch_call(void *sp, void *entry, uintptr_t arg) {
 	asm volatile (
@@ -21,121 +22,174 @@ static inline void stack_switch_call(void *sp, void *entry, uintptr_t arg) {
 	);
 }
 
-#define CO_STACK_SIZE (1 << 16)
 enum co_status {
-	CO_NEW = 1, // 新创建，还未执行过
-	CO_RUNNING, // 已经执行过
-	CO_WAITING, // co_wait等待中
-	CO_DEAD,    // 已经结束，还未释放资源
+	CO_NEW = 1,
+	CO_RUNNING,
+	CO_WAITING,
+	CO_DEAD,
 };
-
+#define CO_STACK_SIZE (1 << 16)
 struct co {
-	int  id;					// co_pool id
-	char *name;					// 协程名字
-	void (*func)(void *);		// co_start 入口函数地址
-	void *arg;					// 入口函数参数
+	int  id;
+	char *name;
+	void (*func)(void *);
+	void *arg;
 
-	enum co_status	status;		// 协程状态
-	struct co *		waiter; 	// 是否有其他协程在等待当前协程，如果有，优先执行
-	jmp_buf			context;	// 协程栈的上下文
-	uint8_t			stack[CO_STACK_SIZE];	// 协程栈
+	enum co_status	status;
+	struct co *		waiter;
+	jmp_buf			context;
+	uint8_t			stack[CO_STACK_SIZE];
 };
-
-struct co *current;
 
 #define CO_POOL_SIZE 128
-struct co *co_pool[CO_POOL_SIZE];
-int co_pool_add_idx, co_pool_yield_idx;
-
-void co_pool_add(struct co *co) {
-	int i, add_idx;
-	for (i = 0; i < CO_POOL_SIZE; i ++ ) {
-		add_idx = (co_pool_add_idx + i) % CO_POOL_SIZE;
-		if (!co_pool[add_idx]) {
-			co_pool_add_idx = add_idx;
-			co_pool[add_idx] = co;
-			co->id = add_idx;
-			return;
+static struct co *current;
+static struct co *co_pool[CO_POOL_SIZE];
+static int co_pool_size;
+static void co_pool_init() {
+	for (int i = 0; i < CO_POOL_SIZE; i ++ ) {
+		co_pool[i] = NULL;
+	}
+	current = NULL;
+}
+static int co_pool_insert(struct co *co) {
+	int success = 0;
+	for (int i = 0; i < CO_POOL_SIZE; i ++ ) {
+		if (co_pool[i] == NULL) {
+			co_pool[i] = co;
+			co->id = i;
+			success = 1;
+			co_pool_size ++ ;
+			break;
 		}
 	}
-	Assert((i == CO_POOL_SIZE), "Number of co has exceeded the upper limit\n");
+	return success;
 }
+static struct co *co_pool_next() {
+	int start = rand() % CO_POOL_SIZE;
+	for (int i = start; i < CO_POOL_SIZE + start; i ++ ) {
+		struct co *next = co_pool[i % CO_POOL_SIZE];
+		if (next == NULL)				continue;
+		if (next->status == CO_DEAD)	continue;
+		if (next->status == CO_WAITING)	continue;
 
-void co_pool_remove(struct co *co) {
+		return next;
+	}
+	return NULL;
+}
+void co_free(struct co *co) {
+	Assert((co != NULL), "should not free a NULL co pointer");
+
 	co_pool[co->id] = NULL;
+	co_pool_size -- ;
+
+	if (!co->name) {
+		free(co->name);
+	}
+	free(co);
 }
 
-static void co_run() {
-	struct co *co = current;
+static void co_main_init() {
+	struct co *main = co_start("main", NULL, NULL);
+	// main is just a concept
+	main->status = CO_RUNNING;
+	current = main;
+}
 
-	if (co->status == CO_NEW) {
-		co->status = CO_RUNNING;
-		co->func(co->arg);
-		co->status = CO_DEAD;
-		co_pool_remove(co);
+static void co_switch_dead(struct co *co);
+static void co_wrapper(void *arg) {
+	struct co *co = (struct co *)arg;
+
+	co->func(co->arg);
+	co->status = CO_DEAD;
+	co_switch_dead(co);
+}
+
+static void co_switch_new(struct co *co) {
+	current = co;
+	co->status = CO_RUNNING;
+	stack_switch_call(co->stack + CO_STACK_SIZE, co_wrapper, (uintptr_t)co);
+}
+static void co_switch_running(struct co *co) {
+	current = co;
+	longjmp(co->context, 1);
+}
+static void co_switch_dead(struct co *co) {
+	if (co->waiter != NULL) {
+		longjmp(co->waiter->context, 1);
 	}
-	else if (co->status == CO_RUNNING) {
-		longjmp(co->context, 1);
-	}
-	else if (co->status == CO_WAITING) {
-		free(co);
+	else {
+		co_yield();
 	}
 }
+static void co_switch_waiting(struct co *co) {
+	Assert(0, "execute a waiting co. "
+			  "maybe a waiting circle has occured\n");
+}
+typedef void (*co_handler_t)(void *arg);
+static void *co_switch[] = {
+	[CO_NEW]		= co_switch_new,
+	[CO_RUNNING]	= co_switch_running,
+	[CO_DEAD]	    = co_switch_dead,
+	[CO_WAITING]	= co_switch_waiting,
+};
 
 struct co *co_start(const char *name, void (*func)(void *), void *arg) {
 	struct co *co = (struct co *)malloc(sizeof(struct co));
+	
 	co->name = (char *)malloc(sizeof(name));
 	strcpy(co->name, name);
 	co->func = func;
 	co->arg  = arg;
-
+	
 	co->status = CO_NEW;
 	co->waiter = NULL;
 
-	co_pool_add(co);
+	co_pool_insert(co);
 
 	return co;
 }
 
-void co_wait(struct co *co) {
-	if (!co) {
-		Assert(0, "Wait a non-existent co\n");
-	}
-
-	int val = setjmp(current->context);
-	if (val == 0) {
-		co->waiter = current;
-		current = co;
-
-		while (co->status != CO_DEAD) {
-			co_run();
-		}
-		co->status = CO_WAITING;
-		co_run();
-		
-		current = co->waiter;
-		co_run();
-	}
-}
-
 void co_yield() {
+	/* jmp_buf buf; */
+	/* int val = setjmp(buf); */
 	int val = setjmp(current->context);
+
 	if (val == 0) {
-		int i, yield_idx;;
-		for (i = 0; i < CO_POOL_SIZE; i ++ ) {
-			yield_idx = co_pool_yield_idx + i;
-			if (co_pool[yield_idx]) {
-				current = co_pool[yield_idx];
-				co_run();
-				break;
-			}
+		struct co* next = co_pool_next();
+		Assert((next != NULL), "next co to execute shouldn't be empty");
+
+		int a;
+		if (next == current) {
+			a = 10;
+			int b = a;
 		}
+
+		longjmp(next->context, 1);
+		/* ((co_handler_t)co_switch[next->status])(next); */
+	}
+	else {
 	}
 }
 
-__attribute__((constructor)) void co_pool_init() {
-	for (int i = 0; i < CO_POOL_SIZE; i ++ ) {
-		co_pool[i] = NULL;
+void co_wait(struct co *co) {
+	Assert((co != NULL), "wait a null co\n");
+	Assert((co != current), "current co can't wait itself\n");
+
+	int val = setjmp(current->context);
+
+	if (val == 0) {
+		current->status = CO_WAITING;
+		co->waiter = current;
+		((co_handler_t)co_switch[co->status])(co);
 	}
-	co_pool_add_idx = co_pool_yield_idx = 0;
+	else {
+		co_free(co);
+		current->status = CO_RUNNING;
+	}
+}
+
+__attribute__((constructor)) void co_init() {
+	srand((unsigned int)time(NULL));
+	co_pool_init();
+	co_main_init();
 }

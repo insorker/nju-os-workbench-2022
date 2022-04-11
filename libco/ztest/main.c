@@ -19,7 +19,7 @@ uintptr_t sp;
 
 void foo(void *arg) {
 	printf("Hello World\n");
-	printf("%s\n", (const char *)arg);
+	/* printf("%s\n", (const char *)arg); */
 	longjmp(buf, 1);
 }
 
