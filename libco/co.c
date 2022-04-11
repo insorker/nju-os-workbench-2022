@@ -65,7 +65,7 @@ static int co_pool_insert(struct co *co) {
 	return success;
 }
 static struct co *co_pool_next() {
-	int start = rand() % CO_POOL_SIZE;
+	int start = rand() % co_pool_size;
 	for (int i = start; i < CO_POOL_SIZE + start; i ++ ) {
 		struct co *next = co_pool[i % CO_POOL_SIZE];
 		if (next == NULL)				continue;
@@ -158,14 +158,7 @@ void co_yield() {
 		struct co* next = co_pool_next();
 		Assert((next != NULL), "next co to execute shouldn't be empty");
 
-		int a;
-		if (next == current) {
-			a = 10;
-			int b = a;
-		}
-
-		longjmp(next->context, 1);
-		/* ((co_handler_t)co_switch[next->status])(next); */
+		((co_handler_t)co_switch[next->status])(next);
 	}
 	else {
 	}
