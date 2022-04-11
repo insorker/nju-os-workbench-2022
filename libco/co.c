@@ -90,7 +90,7 @@ void co_free(struct co *co) {
 
 static void co_main_init() {
 	struct co *main = co_start("main", NULL, NULL);
-	// main is just a concept
+	// main is just a concept to simulate the main function, not the real main
 	main->status = CO_RUNNING;
 	current = main;
 }
@@ -181,8 +181,12 @@ void co_wait(struct co *co) {
 	}
 }
 
-__attribute__((constructor)) void co_init() {
+__attribute__((constructor)) void co_constructor() {
 	srand((unsigned int)time(NULL));
 	co_pool_init();
 	co_main_init();
+}
+
+__attribute__((destructor)) void co_destructor() {
+	co_free(co_pool[0]);
 }
