@@ -1,4 +1,7 @@
 #include <am.h>
+#ifdef TEST
+#include <stdint.h>
+#endif
 
 #define MODULE(mod) \
   typedef struct mod_##mod##_t mod_##mod##_t; \
