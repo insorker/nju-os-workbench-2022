@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <thread.h>
 
+Area heap = {};
+
 static void entry(int tid) { }
 static void finish() { printf("End\n"); }
 
