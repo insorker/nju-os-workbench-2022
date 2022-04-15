@@ -1,6 +1,6 @@
 #include <am.h>
 #ifdef TEST
-#include <stdint.h>
+#include <stddef.h>
 #endif
 
 #define MODULE(mod) \
