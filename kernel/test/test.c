@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include <kernel.h>
 #include <stdio.h>
 #include <thread.h>
