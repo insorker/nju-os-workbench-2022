@@ -1,7 +1,7 @@
 #include <common.h>
 
 static void os_init() {
-  pmm->init();
+  /* pmm->init(); */
 }
 
 static void os_run() {
