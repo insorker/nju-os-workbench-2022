@@ -6,7 +6,7 @@ static void entry(int tid) { }
 static void finish() { printf("End\n"); }
 
 int main() {
-	pmm->init();
+	pmm_init();
 	entry(1);
 	finish();
 }
