@@ -22,6 +22,7 @@ int main(int argc, char *argv[], char *envp[]) {
 	if (pid == 0) {
 		close(1);
 		close(0);
+		close(2);
 		/* close(pipefd[1]); */
 		/* dup(1); */
 		/* close(1); */
