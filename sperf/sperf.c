@@ -19,12 +19,12 @@ int main(int argc, char *argv[], char *envp[]) {
 		// 关闭stderr
 		close(2);
 		// 将stderr接到管道的输入，stderr将输出到管道的输入
-		dup(pipefd[0]);
-		close(pipefd[0]);
+		dup(pipefd[1]);
+		close(pipefd[1]);
 		// 关闭stdout（比如ls，会输出到stdout）
 		close(1);
 		// 关闭管道输出，用不到
-		close(pipefd[1]);
+		close(pipefd[0]);
 
 		execve("/bin/strace", strace_argv, envp);
 		zassert(0, "execve failed");
@@ -33,9 +33,9 @@ int main(int argc, char *argv[], char *envp[]) {
 		// 关闭stdout
 		close(1);
 		// 重定向pipe输出到stdout
-		dup(pipefd[1]);
-		close(pipefd[1]);
-		// 用不到
+		dup(pipefd[0]);
 		close(pipefd[0]);
+		// 用不到
+		close(pipefd[1]);
 	}
 }
