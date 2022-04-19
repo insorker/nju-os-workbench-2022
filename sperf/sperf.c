@@ -16,9 +16,14 @@ int main(int argc, char *argv[], char *envp[]) {
 	
 	pid = fork();
 	if (pid == 0) {
+		// 关闭pipe输入
 		close(pipefd[1]);
+		// 重定向stderr到pipefd[1]，关闭stderr
 		dup(2);
 		close(2);
+		// 关闭stdout（比如ls，会输出到stdout）
+		close(1);
+		// 关闭pipefd[0]，用不到
 		close(pipefd[0]);
 
 		execve("/bin/strace", strace_argv, envp);
