@@ -30,5 +30,12 @@ int main(int argc, char *argv[], char *envp[]) {
 		zassert(0, "execve failed");
 	}
 	else {
+		// 关闭stdin
+		close(0);
+		// 重定向pipe输入到stdin
+		dup(pipefd[0]);
+		close(pipefd[0]);
+		// 用不到
+		close(pipefd[1]);
 	}
 }
