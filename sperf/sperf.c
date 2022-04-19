@@ -37,5 +37,7 @@ int main(int argc, char *argv[], char *envp[]) {
 		close(pipefd[0]);
 		// 用不到
 		close(pipefd[1]);
+
+		while (1);
 	}
 }
