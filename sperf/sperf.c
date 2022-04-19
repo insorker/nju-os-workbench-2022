@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <assert.h>
 #define zassert(x, s) \
-	do { if (x == 0) { printf("%s\n", s); assert(x); } } while (0)
+	do { if ((x) == 0) { printf("%s\n", s); assert((x)); } } while (0)
 
 int main(int argc, char *argv[], char *envp[]) {
 	zassert(argc >= 2, "need at least one argument");
