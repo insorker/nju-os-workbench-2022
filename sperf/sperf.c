@@ -16,17 +16,15 @@ int main(int argc, char *argv[], char *envp[]) {
 	
 	pid = fork();
 	if (pid == 0) {
-		printf("%d ", pipefd[1]);
 		close(pipefd[0]);
-		close(0);
+		close(1);
 		dup(pipefd[1]);
-		close(pipefd[1]);
 
 		execve("/bin/strace", strace_argv, envp);
 		zassert(0, "execve failed");
 	}
 	else {
 		close(0);
-		close(1);
+		
 	}
 }
