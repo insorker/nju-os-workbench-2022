@@ -18,13 +18,13 @@ int main(int argc, char *argv[], char *envp[]) {
 	if (pid == 0) {
 		close(pipefd[0]);
 		close(1);
-		dup(pipefd[1]);
+		/* dup(pipefd[1]); */
 
 		execve("/bin/strace", strace_argv, envp);
 		zassert(0, "execve failed");
 	}
 	else {
-		close(0);
-		
+		/* close(0); */
+
 	}
 }
