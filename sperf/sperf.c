@@ -3,6 +3,7 @@
 #include <unistd.h>
 
 int main(int argc, char *argv[], char *envp[]) {
-	execve("yes", { "yes", NULL }, envp);
+	char *exec_argv[] = { "yes", NULL };
+	execve("yes", exec_argv, envp);
 	perror(argv[0]);
 }
