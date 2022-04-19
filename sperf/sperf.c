@@ -5,6 +5,8 @@
 #define zassert(x, s) \
 	do { if ((x) == 0) { printf("%s\n", s); assert((x)); } } while (0)
 
+char linebuf[1024];
+
 int main(int argc, char *argv[], char *envp[]) {
 	zassert(argc >= 2, "need at least one argument");
 
@@ -30,8 +32,10 @@ int main(int argc, char *argv[], char *envp[]) {
 		zassert(0, "execve failed");
 	}
 	else {
-		char buf[1024];
-		int len = read(pipefd[0], buf, sizeof(buf));
-		write(0, buf, len);
+		int len = 0;
+		do {
+			write(0, linebuf, len);
+			len = read(pipefd[0], linebuf, sizeof(linebuf));
+		} while (len != -1);
 	}
 }
