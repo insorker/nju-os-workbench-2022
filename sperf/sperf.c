@@ -14,6 +14,10 @@ int main(int argc, char *argv[], char *envp[]) {
 
 	zassert(pipe(pipefd) == 0, "create pipe failed");
 	
+	close(1);
+	close(0);
+	printf("Hello World\n");
+
 	pid = fork();
 	if (pid == 0) {
 		close(1);
@@ -23,8 +27,8 @@ int main(int argc, char *argv[], char *envp[]) {
 		/* close(1); */
 		/* close(pipefd[0]); */
 
-		execve("/bin/strace", strace_argv, envp);
-		zassert(0, "execve failed");
+		/* execve("/bin/strace", strace_argv, envp); */
+		/* zassert(0, "execve failed"); */
 	}
 	else {
 		close(0);
