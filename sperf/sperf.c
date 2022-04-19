@@ -38,5 +38,6 @@ int main(int argc, char *argv[], char *envp[]) {
 			len = read(pipefd[0], linebuf, sizeof(linebuf));
 			printf("%d\n", len);
 		} while (len > 0);
+		exit(0);
 	}
 }
