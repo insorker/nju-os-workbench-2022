@@ -47,12 +47,13 @@ int printf(const char *fmt, ...) {
 	char cur_fmt;
 	int d;
 	char c, *s;
+	uintptr_t p;
 	
 	va_start(ap, fmt);
 	while (*fmt) {
 		switch (cur_fmt = *fmt++) {
 		case '%':
-			panic_on(!(*fmt), "Printf Format Error");
+			panic_on(!(*fmt), "Format error");
 			switch (cur_fmt = *fmt++) {
 			case 'c':
 				c = (char)va_arg(ap, int);
@@ -70,8 +71,12 @@ int printf(const char *fmt, ...) {
 				d = va_arg(ap, int);
 				putnum(HEX, d);
 				break;
+			case 'p':
+				p = va_arg(ap, uintptr_t);
+				putnum(HEX, p);
+				break;
 			default:
-				panic("Printf Format Error");
+				panic("No corresponding format\n");
 				break;
 			}
 			break;

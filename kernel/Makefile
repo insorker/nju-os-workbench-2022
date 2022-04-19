@@ -10,3 +10,10 @@ endif
 include $(AM_HOME)/Makefile
 include ../Makefile.lab
 image: git
+
+test: git
+	@gcc $(shell find test/ -name "*.c")  \
+		 src/pmm.c \
+		 -Iframework -Itest -DTEST -lpthread \
+		 -o build/test
+	@build/test

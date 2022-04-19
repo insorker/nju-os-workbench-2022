@@ -1,0 +1,23 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+AM_HOME	Makefile	/^export AM_HOME := $(PWD)\/..\/abstract-machine$/;"	m
+ARCH	Makefile	/^export ARCH    := x86_64-qemu$/;"	m
+INC_PATH	Makefile	/^INC_PATH       := include\/ framework\/$/;"	m
+MODULE	framework/kernel.h	/^MODULE(os) {$/;"	f
+MODULE	framework/kernel.h	/^MODULE(pmm) {$/;"	f
+MODULE	framework/kernel.h	3;"	d
+MODULE_DEF	framework/kernel.h	8;"	d
+NAME	Makefile	/^NAME           := kernel$/;"	m
+SRCS	Makefile	/^SRCS           := framework\/main.c $(shell find -L .\/src\/ -name "*.c")$/;"	m
+kalloc	src/pmm.c	/^static void *kalloc(size_t size) {$/;"	f	file:
+kfree	src/pmm.c	/^static void kfree(void *ptr) {$/;"	f	file:
+main	framework/main.c	/^int main() {$/;"	f
+os	src/os.c	/^MODULE_DEF(os) = {$/;"	v
+os_init	src/os.c	/^static void os_init() {$/;"	f	file:
+os_run	src/os.c	/^static void os_run() {$/;"	f	file:
+pmm	src/pmm.c	/^MODULE_DEF(pmm) = {$/;"	v
+pmm_init	src/pmm.c	/^static void pmm_init() {$/;"	f	file:
