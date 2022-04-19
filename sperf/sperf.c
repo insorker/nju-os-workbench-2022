@@ -30,14 +30,8 @@ int main(int argc, char *argv[], char *envp[]) {
 		zassert(0, "execve failed");
 	}
 	else {
-		// 关闭stdout
-		close(1);
-		// 重定向pipe输出到stdout
-		dup(pipefd[0]);
-		close(pipefd[0]);
-		// 用不到
-		close(pipefd[1]);
-
-		while (0);
+		char buf[1024];
+		int len = read(pipefd[0], buf, sizeof(buf));
+		write(0, buf, len);
 	}
 }
