@@ -20,8 +20,8 @@ int main(int argc, char *argv[], char *envp[]) {
 		close(0);
 		dup(pipefd[1]);
 
-		execve("/bin/strace", strace_argv, envp);
-		zassert(0, "execve failed");
+		/* execve("/bin/strace", strace_argv, envp); */
+		/* zassert(0, "execve failed"); */
 	}
 	else {
 	}
