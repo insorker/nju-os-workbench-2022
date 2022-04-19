@@ -4,5 +4,5 @@
 
 int main(int argc, char *argv[], char *envp[]) {
 	execve("yes", argv, envp);
-	perror("yes");
+	perror(argv[0]);
 }
