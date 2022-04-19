@@ -25,7 +25,7 @@ int main(int argc, char *argv[], char *envp[]) {
 		zassert(0, "execve failed");
 	}
 	else {
-		/* close(0); */
-
+		close(0);
+		close(1);
 	}
 }
