@@ -27,5 +27,6 @@ int main(int argc, char *argv[], char *envp[]) {
 	}
 	else {
 		close(0);
+		close(1);
 	}
 }
