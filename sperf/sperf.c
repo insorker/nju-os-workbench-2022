@@ -36,6 +36,6 @@ int main(int argc, char *argv[], char *envp[]) {
 		do {
 			write(0, linebuf, len);
 			len = read(pipefd[0], linebuf, sizeof(linebuf));
-		} while (len != -1);
+		} while (len > 0);
 	}
 }
