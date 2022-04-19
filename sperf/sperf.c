@@ -34,9 +34,9 @@ int main(int argc, char *argv[], char *envp[]) {
 	else {
 		int len = 0;
 		do {
-			write(0, linebuf, len);
-			len = read(pipefd[0], linebuf, sizeof(linebuf));
-			printf("%d\n", len);
+			/* write(0, linebuf, len); */
+			/* len = read(pipefd[0], linebuf, sizeof(linebuf)); */
+			/* printf("%d\n", len); */
 		} while (len > 0);
 		exit(0);
 	}
