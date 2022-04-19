@@ -14,25 +14,16 @@ int main(int argc, char *argv[], char *envp[]) {
 
 	zassert(pipe(pipefd) == 0, "create pipe failed");
 	
-	close(1);
-	close(0);
-	printf("Hello World\n");
-
 	pid = fork();
 	if (pid == 0) {
-		close(1);
-		close(0);
+		close(pipefd[1]);
+		dup(2);
 		close(2);
-		/* close(pipefd[1]); */
-		/* dup(1); */
-		/* close(1); */
-		/* close(pipefd[0]); */
+		close(pipefd[0]);
 
 		execve("/bin/strace", strace_argv, envp);
 		zassert(0, "execve failed");
 	}
 	else {
-		close(0);
-		close(1);
 	}
 }
