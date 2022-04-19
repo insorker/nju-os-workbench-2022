@@ -20,7 +20,7 @@ int main(int argc, char *argv[], char *envp[]) {
 		close(2);
 		// 将stderr接到管道的输入，stderr将输出到管道的输入
 		dup(pipefd[0]);
-		close(pipefd[1]);
+		close(pipefd[0]);
 		// 关闭stdout（比如ls，会输出到stdout）
 		close(1);
 		// 关闭管道输出，用不到
