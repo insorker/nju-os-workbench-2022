@@ -30,9 +30,9 @@ int main(int argc, char *argv[], char *envp[]) {
 		zassert(0, "execve failed");
 	}
 	else {
-		// 关闭stdin
-		close(0);
-		// 重定向pipe输入到stdin
+		// 关闭stdout
+		close(1);
+		// 重定向pipe输入到stdout
 		dup(pipefd[0]);
 		close(pipefd[0]);
 		// 用不到
