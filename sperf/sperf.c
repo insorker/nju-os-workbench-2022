@@ -5,12 +5,12 @@
 #define zassert(x, s) \
 	do { if ((x) == 0) { printf("%s\n", s); assert((x)); } } while (0)
 
-char linebuf[1024];
+char buf[BUFSIZ];
 
 int main(int argc, char *argv[], char *envp[]) {
 	zassert(argc >= 2, "need at least one argument");
 
-	char *strace_argv[] = { "strace", "-t", argv[1], NULL };
+	char *strace_argv[] = { "strace", "-r", argv[1], NULL };
 	int pipefd[2];
 	int pid;
 
@@ -36,10 +36,15 @@ int main(int argc, char *argv[], char *envp[]) {
 		close(pipefd[1]);
 		int len = 0;
 
-		do {
-			len = read(pipefd[0], linebuf, sizeof(linebuf));
-			write(0, linebuf, len);
-		} while (len > 0);
+		while (fgets(buf, sizeof(buf), fdopen(pipefd[0], "r"))) {
+			printf("%s", buf);
+		}
+
+		/* do { */
+		/*      */
+		/*     len = read(pipefd[0], linebuf, sizeof(linebuf)); */
+		/*     write(0, linebuf, len); */
+		/* } while (len > 0); */
 		exit(0);
 	}
 }
