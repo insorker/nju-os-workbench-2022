@@ -40,7 +40,7 @@ int main(int argc, char *argv[], char *envp[]) {
 
 		while (fgets(buf, sizeof(buf), fdopen(pipefd[0], "r"))) {
 			len = sscanf(buf, "%lf", &time);
-			printf("%lf %s\n", time, buf + len);
+			printf("%lf %d %s\n", time, len, buf + len);
 		}
 
 		/* do { */
