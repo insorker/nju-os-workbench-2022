@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 #include <assert.h>
 #define zassert(x, s) \
 	do { if ((x) == 0) { printf("%s\n", s); assert((x)); } } while (0)
@@ -34,20 +35,20 @@ int main(int argc, char *argv[], char *envp[]) {
 	else {
 		// 关掉父进程的管道输入，不然管道输出会阻塞
 		close(pipefd[1]);
-		int len = 0;
 		double time;
 		char name[100];
 
 		while (fgets(buf, sizeof(buf), fdopen(pipefd[0], "r"))) {
-			len = sscanf(buf, "%lf", &time);
-			printf("%lf %d %s\n", time, len, buf + len);
+			sscanf(buf, "%lf %s", &time, name);
+			for (int i = 0; name[i]; i ++ ) {
+				if (name[i] == '(') {
+					name[i] = '\0';
+					break;
+				}
+			}
+			printf("%lf %s\n", time, name);
 		}
 
-		/* do { */
-		/*      */
-		/*     len = read(pipefd[0], linebuf, sizeof(linebuf)); */
-		/*     write(0, linebuf, len); */
-		/* } while (len > 0); */
 		exit(0);
 	}
 }
