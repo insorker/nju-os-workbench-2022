@@ -10,7 +10,7 @@ char linebuf[1024];
 int main(int argc, char *argv[], char *envp[]) {
 	zassert(argc >= 2, "need at least one argument");
 
-	char *strace_argv[] = { "strace", argv[1], "-r", NULL };
+	char *strace_argv[] = { "strace", "-r", argv[1], NULL };
 	int pipefd[2];
 	int pid;
 
