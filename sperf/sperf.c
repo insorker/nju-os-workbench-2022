@@ -81,7 +81,7 @@ int main(int argc, char *argv[], char *envp[]) {
 	for (struct info *i = syscall_info; i != NULL; i = i->next) {
 		for (int j = 0; j < 4; j++) {
 			if (syscall_sort[j].time < i->time) {
-				for (int k = 3; k >= j; k--) {
+				for (int k = 2; k >= j; k--) {
 					syscall_sort[k + 1] = syscall_sort[k];
 				}
 				syscall_sort[j] = *i;
