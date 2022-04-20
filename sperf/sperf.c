@@ -39,8 +39,8 @@ int main(int argc, char *argv[], char *envp[]) {
 		char name[100];
 
 		while (fgets(buf, sizeof(buf), fdopen(pipefd[0], "r"))) {
-			sscanf(buf, "%lf", &time);
-			printf("%lf %s\n", time, buf);
+			len = sscanf(buf, "%lf", &time);
+			printf("%lf %s\n", time, buf + len);
 		}
 
 		/* do { */
