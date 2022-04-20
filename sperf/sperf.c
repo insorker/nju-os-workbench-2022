@@ -39,7 +39,7 @@ int main(int argc, char *argv[], char *envp[]) {
 		char name[100];
 
 		while (fgets(buf, sizeof(buf), fdopen(pipefd[0], "r"))) {
-			sscanf(buf, "%lf %s", &time, name);
+			sscanf(buf, "%lf %s(", &time, name);
 			printf("%lf %s\n", time, name);
 		}
 
