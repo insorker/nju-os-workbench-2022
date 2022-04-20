@@ -21,7 +21,7 @@ int main(int argc, char *argv[], char *envp[]) {
 		// 关闭stderr
 		close(2);
 		// 将stderr接到管道的输入，stderr将输出到管道的输入
-		dup(pipefd[1]);
+		dup2(pipefd[1], 2);
 		close(pipefd[1]);
 		// 关闭stdout（比如ls，会输出到stdout）
 		close(1);
