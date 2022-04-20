@@ -35,9 +35,12 @@ int main(int argc, char *argv[], char *envp[]) {
 		// 关掉父进程的管道输入，不然管道输出会阻塞
 		close(pipefd[1]);
 		int len = 0;
+		double time;
+		char name[100];
 
 		while (fgets(buf, sizeof(buf), fdopen(pipefd[0], "r"))) {
-			printf("%s", buf);
+			sscanf(buf, "%lf %s", &time, name);
+			printf("%lf %s\n", time, name);
 		}
 
 		/* do { */
