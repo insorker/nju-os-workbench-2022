@@ -32,7 +32,9 @@ int main(int argc, char *argv[], char *envp[]) {
 		zassert(0, "execve failed");
 	}
 	else {
+		close(pipefd[1]);
 		int len = 0;
+		fscanf(pipefd[0], 
 		do {
 			/* write(0, linebuf, len); */
 			len = read(pipefd[0], linebuf, sizeof(linebuf));
