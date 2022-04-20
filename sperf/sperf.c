@@ -41,6 +41,7 @@ int main(int argc, char *argv[], char *envp[]) {
 		while (fgets(buf, sizeof(buf), fdopen(pipefd[0], "r"))) {
 			printf("%s", buf);
 			/* sscanf(buf, "%lf %s", &time, name); */
+			/* if (name[0] == '+') { strcpy(name, "exit"); } */
 			/* for (int i = 0; name[i]; i ++ ) { */
 			/*     if (name[i] == '(') { */
 			/*         name[i] = '\0'; */
