@@ -25,6 +25,7 @@ void add(double time, char *name) {
 	strcpy(si->name, name);
 	si->time = time;
 	si->next = syscall_info;
+	printf("%lf %s\n", si->time, si->name);
 	syscall_info = si;
 }
 
@@ -78,7 +79,6 @@ int main(int argc, char *argv[], char *envp[]) {
 
 	printf("---\n");
 	for (struct info *i = syscall_info; i != NULL; i = i->next) {
-	printf("---\n");
 		printf("%lf %s\n", i->time, i->name);
 	}
 
