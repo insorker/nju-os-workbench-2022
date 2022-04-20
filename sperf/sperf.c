@@ -84,6 +84,7 @@ int main(int argc, char *argv[], char *envp[]) {
 				for (int k = 3; k >= j; k--) {
 					syscall_sort[k + 1] = syscall_sort[k];
 				}
+				syscall_sort[j] = *i;
 				break;
 			}
 		}
@@ -94,7 +95,7 @@ int main(int argc, char *argv[], char *envp[]) {
 
 	others = total;
 	for (int i = 0; i < 5; i++) {
-		if (syscall_sort[i].time != 0) {
+		if (syscall_sort[i].time > 0) {
 			printf("%s (%lf%%)\n", syscall_sort[i].name, syscall_sort[i].time / total);
 			fflush(stdout);
 			others -= syscall_sort[i].time;
