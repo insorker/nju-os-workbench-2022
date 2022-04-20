@@ -27,7 +27,6 @@ void add(double time, char *name) {
 	si->next = syscall_info;
 	printf("-- %lf %s\n", si->time, si->name);
 	syscall_info = si;
-	if (syscall_info == NULL) printf("**\n");
 }
 
 int main(int argc, char *argv[], char *envp[]) {
@@ -74,8 +73,6 @@ int main(int argc, char *argv[], char *envp[]) {
 			add(time, name);
 			printf("%lf %s\n", time, name);
 		}
-
-		exit(0);
 	}
 
 	printf("---\n");
