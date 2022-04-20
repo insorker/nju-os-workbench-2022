@@ -69,7 +69,7 @@ int main(int argc, char *argv[], char *envp[]) {
 					break;
 				}
 			}
-			add(time, name);
+			/* add(time, name); */
 			printf("%lf %s\n", time, name);
 		}
 
