@@ -32,12 +32,13 @@ int main(int argc, char *argv[], char *envp[]) {
 		zassert(0, "execve failed");
 	}
 	else {
+		// 关掉父进程的管道输入，不然管道输出会阻塞
 		close(pipefd[1]);
 		int len = 0;
+
 		do {
-			/* write(0, linebuf, len); */
 			len = read(pipefd[0], linebuf, sizeof(linebuf));
-			printf("%d\n", len);
+			write(0, linebuf, len);
 		} while (len > 0);
 		exit(0);
 	}
