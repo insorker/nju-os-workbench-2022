@@ -2,11 +2,31 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <malloc.h>
 #include <assert.h>
 #define zassert(x, s) \
 	do { if ((x) == 0) { printf("%s\n", s); assert((x)); } } while (0)
 
 char buf[BUFSIZ];
+struct info {
+	char name[100];
+	double time;
+	struct info *next;
+};
+struct info *syscall_info = NULL;
+void add(double time, char *name) {
+	for (struct info *i = syscall_info; i != NULL; i++) {
+		if (strcmp(i->name, name) == 0) {
+			i->time += time;
+			return;
+		}
+	}
+	struct info *si = (struct info *)malloc(sizeof(struct info));
+	strcpy(si->name, name);
+	si->time = time;
+	si->next = syscall_info;
+	syscall_info = si;
+}
 
 int main(int argc, char *argv[], char *envp[]) {
 	zassert(argc >= 2, "need at least one argument");
@@ -39,16 +59,18 @@ int main(int argc, char *argv[], char *envp[]) {
 		char name[100];
 
 		while (fgets(buf, sizeof(buf), fdopen(pipefd[0], "r"))) {
-			printf("%s", buf);
-			/* sscanf(buf, "%lf %s", &time, name); */
-			/* if (name[0] == '+') { strcpy(name, "exit"); } */
-			/* for (int i = 0; name[i]; i ++ ) { */
-			/*     if (name[i] == '(') { */
-			/*         name[i] = '\0'; */
-			/*         break; */
-			/*     } */
-			/* } */
-			/* printf("%lf %s\n", time, name); */
+			/* printf("%s", buf); */
+			sscanf(buf, "%lf %s", &time, name);
+			if (name[0] == '+') { continue; }
+
+			for (int i = 0; name[i]; i ++ ) {
+				if (name[i] == '(') {
+					name[i] = '\0';
+					break;
+				}
+			}
+			add(time, name);
+			printf("%lf %s\n", time, name);
 		}
 
 		exit(0);
