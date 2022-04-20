@@ -15,17 +15,17 @@ struct info {
 };
 struct info *syscall_info = NULL;
 void add(double time, char *name) {
-	for (struct info *i = syscall_info; i != NULL; i++) {
+	for (struct info *i = syscall_info; i != NULL; i = i->next) {
 		if (strcmp(i->name, name) == 0) {
 			i->time += time;
 			return;
 		}
 	}
 	struct info *si = (struct info *)malloc(sizeof(struct info));
-	/* strcpy(si->name, name); */
-	/* si->time = time; */
-	/* si->next = syscall_info; */
-	/* syscall_info = si; */
+	strcpy(si->name, name);
+	si->time = time;
+	si->next = syscall_info;
+	syscall_info = si;
 }
 
 int main(int argc, char *argv[], char *envp[]) {
@@ -74,5 +74,11 @@ int main(int argc, char *argv[], char *envp[]) {
 		}
 
 		exit(0);
+	}
+
+	for (struct info *i = syscall_info; i != NULL; ) {
+		struct info *j = i;
+		i = i->next;
+		free(j);
 	}
 }
