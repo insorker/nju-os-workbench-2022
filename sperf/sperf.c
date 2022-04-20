@@ -34,7 +34,6 @@ int main(int argc, char *argv[], char *envp[]) {
 	else {
 		close(pipefd[1]);
 		int len = 0;
-		fscanf(pipefd[0], 
 		do {
 			/* write(0, linebuf, len); */
 			len = read(pipefd[0], linebuf, sizeof(linebuf));
