@@ -25,7 +25,7 @@ void add(double time, char *name) {
 	strcpy(si->name, name);
 	si->time = time;
 	si->next = syscall_info;
-	printf("%lf %s\n", si->time, si->name);
+	printf("-- %lf %s\n", si->time, si->name);
 	syscall_info = si;
 }
 
