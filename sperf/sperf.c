@@ -39,14 +39,15 @@ int main(int argc, char *argv[], char *envp[]) {
 		char name[100];
 
 		while (fgets(buf, sizeof(buf), fdopen(pipefd[0], "r"))) {
-			sscanf(buf, "%lf %s", &time, name);
-			for (int i = 0; name[i]; i ++ ) {
-				if (name[i] == '(') {
-					name[i] = '\0';
-					break;
-				}
-			}
-			printf("%lf %s\n", time, name);
+			printf("%s", buf);
+			/* sscanf(buf, "%lf %s", &time, name); */
+			/* for (int i = 0; name[i]; i ++ ) { */
+			/*     if (name[i] == '(') { */
+			/*         name[i] = '\0'; */
+			/*         break; */
+			/*     } */
+			/* } */
+			/* printf("%lf %s\n", time, name); */
 		}
 
 		exit(0);
