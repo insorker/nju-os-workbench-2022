@@ -78,6 +78,7 @@ int main(int argc, char *argv[], char *envp[]) {
 
 	printf("---\n");
 	for (struct info *i = syscall_info; i != NULL; i = i->next) {
+	printf("---\n");
 		printf("%lf %s\n", i->time, i->name);
 	}
 
