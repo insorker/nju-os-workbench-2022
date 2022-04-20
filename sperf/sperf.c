@@ -76,6 +76,10 @@ int main(int argc, char *argv[], char *envp[]) {
 		exit(0);
 	}
 
+	for (struct info *i = syscall_info; i != NULL; i = i->next) {
+		printf("%lf %s\n", i->time, i->name);
+	}
+
 	for (struct info *i = syscall_info; i != NULL; ) {
 		struct info *j = i;
 		i = i->next;
