@@ -22,10 +22,10 @@ void add(double time, char *name) {
 		}
 	}
 	struct info *si = (struct info *)malloc(sizeof(struct info));
-	strcpy(si->name, name);
-	si->time = time;
-	si->next = syscall_info;
-	syscall_info = si;
+	/* strcpy(si->name, name); */
+	/* si->time = time; */
+	/* si->next = syscall_info; */
+	/* syscall_info = si; */
 }
 
 int main(int argc, char *argv[], char *envp[]) {
@@ -69,7 +69,7 @@ int main(int argc, char *argv[], char *envp[]) {
 					break;
 				}
 			}
-			/* add(time, name); */
+			add(time, name);
 			printf("%lf %s\n", time, name);
 		}
 
