@@ -71,13 +71,38 @@ int main(int argc, char *argv[], char *envp[]) {
 				}
 			}
 			add(time, name);
-			printf("%lf %s\n", time, name);
+			/* printf("%lf %s\n", time, name); */
 		}
 	}
 
-	printf("---\n");
+	double total = 0, others = 0;
+	struct info syscall_sort[5] = { };
+
 	for (struct info *i = syscall_info; i != NULL; i = i->next) {
-		printf("%lf %s\n", i->time, i->name);
+		for (int j = 0; j < 4; j++) {
+			if (syscall_sort[j].time < i->time) {
+				for (int k = 3; k >= j; k--) {
+					syscall_sort[k + 1] = syscall_sort[k];
+				}
+				break;
+			}
+		}
+		total += i->time;
+		/* printf("%s (%lf)\n", i->time, i->name); */
+		/* fflush(stdout); */
+	}
+
+	others = total;
+	for (int i = 0; i < 5; i++) {
+		if (syscall_sort[i].time != 0) {
+			printf("%s (%lf%%)\n", syscall_sort[i].name, syscall_sort[i].time / total);
+			fflush(stdout);
+			others -= syscall_sort[i].time;
+		}
+		else {
+			printf("%s (%lf%%)\n", "others", others / total);
+			fflush(stdout);
+		}
 	}
 
 	for (struct info *i = syscall_info; i != NULL; ) {
