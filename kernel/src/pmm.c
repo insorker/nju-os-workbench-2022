@@ -162,6 +162,7 @@ static void *kalloc(size_t size) {
 			hb_idx = hb_find(hb_start->head, 1, HB_MAX, size);
 			if (hb_idx) {
 				printf("%ld\n", hb_idx2size(hb_idx));
+				printf("%ld\n", hb_idx2addr(hb_start->cont, hb_idx, size) - heap_block_start);
 				return hb_idx2addr(hb_start->cont, hb_idx, size);
 			}
 		}
