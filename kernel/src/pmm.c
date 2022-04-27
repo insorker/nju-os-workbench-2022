@@ -161,8 +161,10 @@ static void *kalloc(size_t size) {
 			hb_start = (heap_block *)(heap.start + i * sizeof(heap_block));
 			hb_idx = hb_find(hb_start->head, 1, HB_MAX, size);
 			if (hb_idx) {
+#ifdef TEST
 				printf("%ld\n", hb_idx2size(hb_idx));
-				printf("%ld\n", hb_idx2addr(hb_start->cont, hb_idx, size) - heap_block_start - HB_HEAD_SIZE);
+				printf("%p\n", hb_idx2addr(hb_start->cont, hb_idx, size));
+#endif
 				return hb_idx2addr(hb_start->cont, hb_idx, size);
 			}
 		}
@@ -175,7 +177,6 @@ static void kfree(void *ptr) {
 	if (hb_check_addr(ptr)) { assert(0); }
 
 	uintptr_t addr = (uintptr_t)ptr - (uintptr_t)heap_block_start;
-	printf("%ld\n", addr);
 	if ((addr % HB_WHOL_SIZE - HB_HEAD_SIZE) % 16 != 0) { assert(0); }
 
 	heap_block *hb = heap.start + addr / HB_WHOL_SIZE * sizeof(heap_block);

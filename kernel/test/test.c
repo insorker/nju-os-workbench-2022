@@ -6,6 +6,7 @@ static void entry(int tid) {
 	void *addr = pmm->alloc(128);
 	pmm->free(addr);
 	addr = pmm->alloc(128);
+	pmm->free(addr);
 }
 static void finish() { printf("End\n"); }
 
