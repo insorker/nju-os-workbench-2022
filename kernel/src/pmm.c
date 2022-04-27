@@ -47,7 +47,7 @@ static size_t hb_roundup(size_t size) {
 		size -= lowbit(size);
 		cnt++;
 	}
-	if (cnt >= 1) { new_size <<= 1; }
+	if (cnt > 1) { new_size <<= 1; }
 	if (new_size < 16) { new_size = 16; }
 
 	return new_size;
