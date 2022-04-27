@@ -3,7 +3,9 @@
 #include <thread.h>
 
 static void entry(int tid) {
-	pmm->alloc(128);
+	void *addr = pmm->alloc(128);
+	pmm->free(addr);
+	addr = pmm->alloc(128);
 }
 static void finish() { printf("End\n"); }
 
@@ -12,5 +14,6 @@ int main() {
 	for (int i = 0; i < 1; i++) {
 		create(entry);
 	}
+	
 	join(finish);
 }
