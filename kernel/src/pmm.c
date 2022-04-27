@@ -122,6 +122,7 @@ static size_t hb_free(char *head, void *cont, size_t idx, size_t size, void *add
 	if (hb_idx2addr(cont, idx, size) == addr) {
 		printf("HB FREE! %ld\n", idx);
 		head[idx] = 0;
+		hb_pushup(head, idx);
 		return 0;
 	}
 	else {
@@ -179,7 +180,6 @@ static void kfree(void *ptr) {
 	if ((addr % HB_WHOL_SIZE - HB_HEAD_SIZE) % 16 != 0) { assert(0); }
 
 	heap_block *hb = heap.start + addr / HB_WHOL_SIZE * sizeof(heap_block);
-	printf("%p %p\n", hb, heap.start);
 	hb_free(hb->head, hb->cont, 1, HB_MAX, ptr);
 }
 
