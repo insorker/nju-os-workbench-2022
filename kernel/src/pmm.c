@@ -15,7 +15,7 @@
 typedef struct heap_block {
 	void *head;
 	void *cont;
-	struct heap_block *next;
+	char next;
 } heap_block;
 static size_t heap_block_number;
 static void  *heap_block_start;
@@ -23,7 +23,7 @@ static void  *heap_block_start;
 static void hb_init(heap_block *hb, void *start) {
 	hb->head = start;
 	hb->cont = start + HB_HEAD_SIZE;
-	hb->next = NULL;
+	hb->next = 0;
 
 	memset(hb->head, 0, HB_HEAD_SIZE);
 }
@@ -174,23 +174,23 @@ static void *kalloc(size_t size) {
 			}
 		}
 		else {
-			heap_block *hb_next;
-			heap_block *hb_last = NULL;
-			size_t hb_idx;
+			heap_block *hb_start, *hb_next;
 
-			for (size_t i = 0; i < heap_block_number; i++) {
-				hb_next = (heap_block *)(heap.start + i * sizeof(heap_block));
-				hb_idx = hb_find(hb_next->head, 1, HB_MAX, size);
-				if (hb_idx == 1) {
-					if (hb_last) {
-						hb_last->next = hb_next;
-						hb_next->next = NULL;
-					}
-					hb_last = hb_next;
+			for (size_t i = 0, j = 0; i < heap_block_number; i++) {
+				j = i;
+				hb_start = (heap_block *)(heap.start + i * sizeof(heap_block));
+				hb_next = hb_start;
+
+				while (((char *)(hb_next->head))[1] == 0 && (j - i + 1) * HB_MAX < size) {
+					j++;
+					hb_next = (heap_block *)(heap.start + j * sizeof(heap_block));	
 				}
-				else {
-					printf("Kalloc >=64k error\n");
-					assert(0);
+				if ((j - i + 1) * HB_MAX >= size) {
+					for (size_t k = i; k <= j; k++) {
+						hb_next = (heap_block *)(heap.start + j * sizeof(heap_block));	
+						((char *)(hb_next->head))[1] = 1;
+					}
+					return hb_start;
 				}
 			}
 		}
