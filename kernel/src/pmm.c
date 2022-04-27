@@ -113,7 +113,7 @@ static void *hb_idx2addr(void *cont, size_t idx, size_t size) {
 
 static size_t hb_idx2size(size_t idx) {
 	size_t size = HB_MAX;
-	while (idx >> 1) {
+	while (idx >>= 1) {
 		size >>= 1;
 	}
 	return size;
