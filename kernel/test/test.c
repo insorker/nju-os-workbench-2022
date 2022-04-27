@@ -8,7 +8,7 @@ static void entry(int tid) { }
 static void finish() { printf("End\n"); }
 
 int main() {
-	pmm_init();
-	entry(1);
+	/* pmm_init(); */
+	/* entry(1); */
 	finish();
 }
