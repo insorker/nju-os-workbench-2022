@@ -217,6 +217,7 @@ static void kfree(void *ptr) {
 
 	heap_block *hb = heap.start + addr / HB_WHOL_SIZE * sizeof(heap_block);
 	if (hb->next) {
+		printf("%d\n", hb->next);
 		while (hb->next) {
 			((char *)(hb->head))[1] = 0;
 			hb->next = 0;
