@@ -14,7 +14,7 @@ static void kfree(void *ptr) {
 #ifdef TEST
 #define HEAP_SIZE (1 << 25)
 static void pmm_init() {
-	char* pmsize = malloc(HEAP_SIZE);
+	char* ptr = malloc(HEAP_SIZE);
 	heap.start = ptr;
 	heap.end   = ptr + HEAP_SIZE;
 	printf("Got %d MiB heap: [%p, %p)\n", HEAP_SIZE >> 20, heap.start, heap.end);
