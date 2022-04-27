@@ -1,6 +1,7 @@
 #include <common.h>
 #ifdef TEST
 #include <stdlib.h>
+#include <stdio.h>
 #endif
 
 static void *kalloc(size_t size) {
