@@ -213,11 +213,11 @@ static void kfree(void *ptr) {
 	if (hb_check_addr(ptr)) { assert(0); }
 
 	uintptr_t addr = (uintptr_t)ptr - (uintptr_t)heap_block_start;
-	if ((addr % HB_WHOL_SIZE - HB_HEAD_SIZE) % 16 != 0) { assert(0); }
+	if ((addr % HB_WHOL_SIZE - HB_HEAD_SIZE) % HB_MIN != 0) { assert(0); }
 
 	heap_block *hb = heap.start + addr / HB_WHOL_SIZE * sizeof(heap_block);
 	if (hb->next) {
-		printf("%d\n", hb->next);
+		printf("next %d\n", hb->next);
 		while (hb->next) {
 			((char *)(hb->head))[1] = 0;
 			hb->next = 0;
