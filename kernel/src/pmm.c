@@ -134,6 +134,7 @@ static void kinit() {
   uintptr_t pmsize = ((uintptr_t)heap.end - (uintptr_t)heap.start);
 	heap_block_number = pmsize / (HB_WHOL_SIZE + sizeof(heap_block));
 	heap_block_start  = heap.start + heap_block_number * sizeof(heap_block);
+	printf("%ld\n", (HB_WHOL_SIZE + sizeof(heap_block)));
 	printf("%ld\n", heap_block_number);
 	printf("%p\n", heap_block_start);
 	
