@@ -134,6 +134,8 @@ static void kinit() {
   uintptr_t pmsize = ((uintptr_t)heap.end - (uintptr_t)heap.start);
 	heap_block_number = pmsize / (HB_WHOL_SIZE + sizeof(heap_block));
 	heap_block_start  = heap.start + heap_block_number * sizeof(heap_block);
+	printf("%ld\n", heap_block_number);
+	printf("%p\n", heap_block_start);
 	
 	for (size_t i = 0; i < heap_block_number; i++) {
 		heap_block *hb = (heap_block *)(heap.start + i * sizeof(heap_block));
@@ -145,17 +147,16 @@ static void *kalloc(size_t size) {
 	size = hb_roundup(size);
 
 	if (!hb_check_size(size)) {
-		printf("H\n");
-		/* heap_block *hb_start; */
-		/* size_t hb_idx; */
-    /*  */
-		/* for (size_t i = 0; i < heap_block_number; i++) { */
-		/*   hb_start = heap.start + i * sizeof(heap_block); */
-		/*   hb_idx = hb_find(hb_start->head, 1, HB_MAX, size); */
-		/*   if (hb_idx) { */
-		/*     return hb_idx2addr(hb_start->cont, hb_idx, size); */
-		/*   } */
-		/* } */
+		heap_block *hb_start;
+		size_t hb_idx;
+
+		for (size_t i = 0; i < heap_block_number; i++) {
+			hb_start = (heap_block *)(heap.start + i * sizeof(heap_block));
+			hb_idx = hb_find(hb_start->head, 1, HB_MAX, size);
+			if (hb_idx) {
+				return hb_idx2addr(hb_start->cont, hb_idx, size);
+			}
+		}
 	}
 
   return NULL;
