@@ -174,6 +174,8 @@ static void *kalloc(size_t size) {
 			}
 		}
 		else {
+			printf("big\n");
+
 			heap_block *hb_start, *hb_next;
 
 			for (size_t i = 0, j = 0; i < heap_block_number; i++) {
