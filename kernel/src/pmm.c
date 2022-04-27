@@ -176,9 +176,9 @@ static void kfree(void *ptr) {
 
 	uintptr_t addr = (uintptr_t)ptr - (uintptr_t)heap_block_start;
 	printf("%ld\n", addr);
-	if (addr % 16 != 0) { assert(0); }
+	if ((addr % HB_WHOL_SIZE - HB_HEAD_SIZE) % 16 != 0) { assert(0); }
 
-	heap_block *hb = heap.start + addr / HB_MAX * sizeof(heap_block);
+	heap_block *hb = heap.start + addr / HB_WHOL_SIZE * sizeof(heap_block);
 	hb_free(hb->head, hb->cont, 1, HB_MAX, ptr);
 }
 
