@@ -12,7 +12,7 @@ static void kfree(void *ptr) {
 }
 
 #ifdef TEST
-#define HEAP_SIZE (1 << 25)
+#define HEAP_SIZE (1 << 27)
 static void pmm_init() {
 	char* ptr = malloc(HEAP_SIZE);
 	heap.start = ptr;
