@@ -3,7 +3,6 @@
 
 #include <kernel.h>
 #include <stdio.h>
-#include <stdlib.h>
 
 typedef struct {
 	void *start, *end;
