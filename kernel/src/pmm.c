@@ -210,7 +210,16 @@ static void kfree(void *ptr) {
 	if ((addr % HB_WHOL_SIZE - HB_HEAD_SIZE) % 16 != 0) { assert(0); }
 
 	heap_block *hb = heap.start + addr / HB_WHOL_SIZE * sizeof(heap_block);
-	hb_free(hb->head, hb->cont, 1, HB_MAX, ptr);
+	if (hb->next) {
+		while (hb->next) {
+			((char *)(hb->head))[1] = 0;
+			hb->next = 0;
+			hb += sizeof(heap_block);
+		}
+	}
+	else {
+		hb_free(hb->head, hb->cont, 1, HB_MAX, ptr);
+	}
 }
 
 #ifdef TEST

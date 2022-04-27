@@ -4,7 +4,9 @@
 
 static void entry(int tid) {
 	void *addr = pmm->alloc(1 << 17);
-	/* pmm->free(addr); */
+	pmm->free(addr);
+	void *addr = pmm->alloc(1 << 17);
+	pmm->free(addr);
 	/* addr = pmm->alloc(128); */
 	/* void *addr16 = pmm->alloc(16); */
 	/* pmm->free(addr); */
