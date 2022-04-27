@@ -3,7 +3,7 @@
 #include <thread.h>
 
 static void entry(int tid) {
-	void *addr = pmm->alloc(1 << 17);
+	void *addr = pmm->alloc(1 << 18);
 	pmm->free(addr);
 	addr = pmm->alloc(1 << 17);
 	pmm->free(addr);
