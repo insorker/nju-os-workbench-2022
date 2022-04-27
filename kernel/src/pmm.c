@@ -79,14 +79,12 @@ static size_t hb_find(char *head, size_t idx, size_t block_size, size_t size) {
 	}
 
 	if (head[idx] == 0 && block_size == size) {
-		printf("FIND!\n");
+		printf("FIND! %ld\n", idx);
 		head[idx] = 1;
 		return idx;
 	}
 
-#ifndef TEST
 	assert(block_size != 16);
-#endif
 
 	size_t le = idx << 1, ri = le + 1;
 	if ((le = hb_find(head, le, block_size >> 1, size))) {
