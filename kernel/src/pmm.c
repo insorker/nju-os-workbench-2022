@@ -179,6 +179,7 @@ static void kfree(void *ptr) {
 	if ((addr % HB_WHOL_SIZE - HB_HEAD_SIZE) % 16 != 0) { assert(0); }
 
 	heap_block *hb = heap.start + addr / HB_WHOL_SIZE * sizeof(heap_block);
+	printf("%p %p\n", hb, heap.start);
 	hb_free(hb->head, hb->cont, 1, HB_MAX, ptr);
 }
 
