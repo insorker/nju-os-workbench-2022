@@ -145,16 +145,16 @@ static void *kalloc(size_t size) {
 	size = hb_roundup(size);
 
 	if (!hb_check_size(size)) {
-		heap_block *hb_start;
-		size_t hb_idx;
-
-		for (size_t i = 0; i < heap_block_number; i++) {
-			hb_start = heap.start + i * sizeof(heap_block);
-			hb_idx = hb_find(hb_start->head, 1, HB_MAX, size);
-			if (hb_idx) {
-				return hb_idx2addr(hb_start->cont, hb_idx, size);
-			}
-		}
+		/* heap_block *hb_start; */
+		/* size_t hb_idx; */
+    /*  */
+		/* for (size_t i = 0; i < heap_block_number; i++) { */
+		/*   hb_start = heap.start + i * sizeof(heap_block); */
+		/*   hb_idx = hb_find(hb_start->head, 1, HB_MAX, size); */
+		/*   if (hb_idx) { */
+		/*     return hb_idx2addr(hb_start->cont, hb_idx, size); */
+		/*   } */
+		/* } */
 	}
 
   return NULL;
@@ -178,7 +178,7 @@ static void pmm_init() {
 	heap.end   = ptr + HEAP_SIZE;
 	printf("Got %d MiB heap: [%p, %p)\n", HEAP_SIZE >> 20, heap.start, heap.end);
 
-	/* kinit(); */
+	kinit();
 }
 #else
 static void pmm_init() {
