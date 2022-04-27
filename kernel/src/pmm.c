@@ -78,6 +78,7 @@ static void *kalloc(size_t size) {
 	kinit();
 	printf("%ld\n", hb_roundup(4));
 	printf("%ld\n", hb_roundup(3));
+	printf("%ld\n", hb_roundup(16));
 	printf("%ld\n", hb_roundup(17));
 	printf("%ld\n", hb_roundup(20));
 	printf("%ld\n", hb_roundup(127));
