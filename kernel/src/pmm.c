@@ -119,7 +119,7 @@ static size_t hb_idx2size(size_t idx) {
 
 static size_t hb_free(char *head, void *cont, size_t idx, size_t size, void *addr) {
 	if (idx >= HB_HEAD_SIZE) { return 1; }
-	if (hb_idx2addr(cont, idx, size) == addr) {
+	if (head[idx] == 1 && hb_idx2addr(cont, idx, size) == addr) {
 		printf("HB FREE! %ld\n", idx);
 		head[idx] = 0;
 		hb_pushup(head, idx);
