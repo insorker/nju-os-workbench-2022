@@ -65,6 +65,9 @@ static void hb_pushup(char *head, size_t idx) {
 	if (head[le] & 1 && head[ri] & 1) {
 		head[idx] = 3;
 	}
+	else if (head[le] == 0 && head[ri] == 0) {
+		head[idx] = 0;
+	}
 	else {
 		head[idx] = 2;
 	}
