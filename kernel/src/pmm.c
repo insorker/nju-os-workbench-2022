@@ -90,11 +90,11 @@ static size_t hb_find(char *head, size_t idx, size_t block_size, size_t size) {
 #endif
 
 	size_t le = idx << 1, ri = le + 1;
-	if ((le = hb_find(head, le, block_size, size))) {
+	if ((le = hb_find(head, le, block_size >> 1, size))) {
 		hb_pushup(head, idx);
 		return le;
 	}
-	if ((ri = hb_find(head, ri, block_size, size))) {
+	if ((ri = hb_find(head, ri, block_size >> 1, size))) {
 		hb_pushup(head, idx);
 		return ri;
 	}
@@ -145,7 +145,6 @@ static void kinit() {
 
 static void *kalloc(size_t size) {
 	size = hb_roundup(size);
-	printf("%ld\n", size);
 
 	if (!hb_check_size(size)) {
 		heap_block *hb_start;
