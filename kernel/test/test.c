@@ -7,7 +7,7 @@ static void finish() { printf("End\n"); }
 
 int main() {
 	pmm->init();
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 1; i++) {
 		create(entry);
 	}
 	join(finish);
