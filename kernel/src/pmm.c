@@ -4,6 +4,8 @@
 #include <stdio.h>
 #endif
 
+struct j
+
 static void *kalloc(size_t size) {
   return NULL;
 }
