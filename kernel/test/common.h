@@ -2,8 +2,8 @@
 #define COMMON_H
 
 #include <kernel.h>
-#include <klib.h>
-#include <klib-macros.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 typedef struct {
 	void *start, *end;
