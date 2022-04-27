@@ -174,6 +174,7 @@ static void kfree(void *ptr) {
 	if (hb_check_addr(ptr)) { assert(0); }
 
 	uintptr_t addr = (uintptr_t)ptr - (uintptr_t)heap_block_start;
+	printf("%ld\n", addr);
 	if (addr % 16 != 0) { assert(0); }
 
 	heap_block *hb = heap.start + addr / HB_MAX * sizeof(heap_block);
