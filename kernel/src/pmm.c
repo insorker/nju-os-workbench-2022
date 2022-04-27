@@ -189,6 +189,12 @@ static void *kalloc(size_t size) {
 					for (size_t k = i; k <= j; k++) {
 						hb_next = (heap_block *)(heap.start + k * sizeof(heap_block));	
 						((char *)(hb_next->head))[1] = 1;
+						if (k != j) {
+							hb_next->next = 1;
+						}
+						else {
+							hb_next->next = 0;
+						}
 #ifdef TEST
 						printf("%ld\n", k);
 						printf("%p\n", hb_idx2addr(hb_next->cont, k, size));
