@@ -80,6 +80,7 @@ static size_t hb_find(char *head, size_t idx, size_t block_size, size_t size) {
 	printf("%ld\n", idx);
 
 	if (head[idx] == 0 && block_size == size) {
+		printf("FIND!\n");
 		head[idx] = 1;
 		return idx;
 	}
@@ -89,11 +90,11 @@ static size_t hb_find(char *head, size_t idx, size_t block_size, size_t size) {
 #endif
 
 	size_t le = idx << 1, ri = le + 1;
-	if (hb_find(head, le, block_size, size)) {
+	if ((le = hb_find(head, le, block_size, size))) {
 		hb_pushup(head, idx);
 		return le;
 	}
-	if (hb_find(head, ri, block_size, size)) {
+	if ((ri = hb_find(head, ri, block_size, size))) {
 		hb_pushup(head, idx);
 		return ri;
 	}
