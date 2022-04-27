@@ -174,8 +174,6 @@ static void *kalloc(size_t size) {
 			}
 		}
 		else {
-			printf("big\n");
-
 			heap_block *hb_start, *hb_next;
 
 			for (size_t i = 0, j = 0; i < heap_block_number; i++) {
@@ -202,7 +200,7 @@ static void *kalloc(size_t size) {
 						printf("%p\n", hb_idx2addr(hb_next->cont, k, size));
 #endif
 					}
-					return hb_start;
+					return hb_start->cont;
 				}
 			}
 		}
