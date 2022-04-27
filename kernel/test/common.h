@@ -1,7 +1,7 @@
 #ifndef COMMOM_H
 #define COMMON_H
 
-#include <kernel.h>
+// #include <kernel.h>
 
 typedef struct {
 	void *start, *end;

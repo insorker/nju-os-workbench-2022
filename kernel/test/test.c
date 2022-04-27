@@ -1,6 +1,6 @@
+#include <kernel.h>
 #include <stdio.h>
 #include <thread.h>
-#include <common.h>
 
 Area heap = {};
 
