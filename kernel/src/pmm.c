@@ -77,6 +77,7 @@ static size_t hb_find(char *head, size_t idx, size_t block_size, size_t size) {
 	if (head[idx] == 1 || head[idx] == 3) {
 		return 0;
 	}
+	printf("%ld\n", idx);
 
 	if (head[idx] == 0 && block_size == size) {
 		head[idx] = 1;
