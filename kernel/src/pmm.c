@@ -145,6 +145,7 @@ static void *kalloc(size_t size) {
 	size = hb_roundup(size);
 
 	if (!hb_check_size(size)) {
+		printf("H\n");
 		/* heap_block *hb_start; */
 		/* size_t hb_idx; */
     /*  */
