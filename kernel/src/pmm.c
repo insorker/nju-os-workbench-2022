@@ -77,7 +77,7 @@ static size_t hb_find(char *head, size_t idx, size_t block_size, size_t size) {
 	if (head[idx] == 1 || head[idx] == 3) {
 		return 0;
 	}
-	printf("%ld\n", idx);
+	/* printf("%ld\n", idx); */
 
 	if (head[idx] == 0 && block_size == size) {
 		printf("FIND!\n");
@@ -145,6 +145,7 @@ static void kinit() {
 
 static void *kalloc(size_t size) {
 	size = hb_roundup(size);
+	printf("%ld\n", size);
 
 	if (!hb_check_size(size)) {
 		heap_block *hb_start;
