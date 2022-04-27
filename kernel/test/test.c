@@ -3,7 +3,7 @@
 #include <thread.h>
 
 static void entry(int tid) {
-	/* pmm->alloc(128); */
+	pmm->alloc(128);
 }
 static void finish() { printf("End\n"); }
 
