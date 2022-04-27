@@ -79,7 +79,7 @@ static size_t hb_find(char *head, size_t idx, size_t block_size, size_t size) {
 	}
 
 	if (head[idx] == 0 && block_size == size) {
-		printf("FIND! %ld\n", idx);
+		printf("HB FIND! %ld\n", idx);
 		head[idx] = 1;
 		return idx;
 	}
@@ -120,6 +120,7 @@ static size_t hb_idx2size(size_t idx) {
 static size_t hb_free(char *head, void *cont, size_t idx, size_t size, void *addr) {
 	if (idx >= HB_HEAD_SIZE) { return 1; }
 	if (hb_idx2addr(cont, idx, size) == addr) {
+		printf("HB FREE! %ld\n", idx);
 		head[idx] = 0;
 		return 0;
 	}
