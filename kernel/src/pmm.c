@@ -149,6 +149,7 @@ static void *kalloc(size_t size) {
 		size_t hb_idx;
 
 		for (size_t i = 0; i < heap_block_number; i++) {
+			printf("%ld\n", i);
 			hb_start = (heap_block *)(heap.start + i * sizeof(heap_block));
 			hb_idx = hb_find(hb_start->head, 1, HB_MAX, size);
 			if (hb_idx) {
