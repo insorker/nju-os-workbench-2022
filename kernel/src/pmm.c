@@ -1,4 +1,7 @@
 #include <common.h>
+#ifdef TEST
+#include <stdlib.h>
+#endif
 
 static void *kalloc(size_t size) {
   return NULL;
