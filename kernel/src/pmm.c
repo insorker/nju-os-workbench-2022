@@ -187,7 +187,7 @@ static void *kalloc(size_t size) {
 				}
 				if ((j - i + 1) * HB_MAX >= size) {
 					for (size_t k = i; k <= j; k++) {
-						hb_next = (heap_block *)(heap.start + j * sizeof(heap_block));	
+						hb_next = (heap_block *)(heap.start + k * sizeof(heap_block));	
 						((char *)(hb_next->head))[1] = 1;
 #ifdef TEST
 						printf("%ld\n", k);
