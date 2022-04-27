@@ -77,7 +77,6 @@ static size_t hb_find(char *head, size_t idx, size_t block_size, size_t size) {
 	if (head[idx] == 1 || head[idx] == 3) {
 		return 0;
 	}
-	/* printf("%ld\n", idx); */
 
 	if (head[idx] == 0 && block_size == size) {
 		printf("FIND!\n");
@@ -110,6 +109,14 @@ static void *hb_idx2addr(void *cont, size_t idx, size_t size) {
 		i = lowbit(start);
 	}
 	return cont + (idx - start) * size;
+}
+
+static size_t hb_idx2size(size_t idx) {
+	size_t size = HB_MAX;
+	while (idx >> 1) {
+		size >>= 1;
+	}
+	return size;
 }
 
 static size_t hb_free(char *head, void *cont, size_t idx, size_t size, void *addr) {
@@ -151,11 +158,10 @@ static void *kalloc(size_t size) {
 		size_t hb_idx;
 
 		for (size_t i = 0; i < heap_block_number; i++) {
-			printf("%ld\n", i);
 			hb_start = (heap_block *)(heap.start + i * sizeof(heap_block));
 			hb_idx = hb_find(hb_start->head, 1, HB_MAX, size);
 			if (hb_idx) {
-				printf("%ld\n", hb_idx);
+				printf("%ld\n", hb_idx2size(hb_idx));
 				return hb_idx2addr(hb_start->cont, hb_idx, size);
 			}
 		}
