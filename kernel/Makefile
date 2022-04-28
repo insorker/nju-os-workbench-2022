@@ -12,8 +12,8 @@ include ../Makefile.lab
 image: git
 
 test: git
-	@gcc $(shell find test/ -name "*.c")  \
-		 src/pmm.c \
-		 -Iframework -Itest -DTEST -lpthread \
-		 -o build/test
+	@gcc $(shell find src/ -name "*.c")  \
+		$(shell find test/ -name "*.c") \
+		-Iframework -Itest -DTEST -lpthread \
+		-o build/test
 	@build/test
