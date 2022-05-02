@@ -62,9 +62,9 @@ int main(int argc, char *argv[]) {
 			compile();
 			handle = dlopen("./crepl_tmp.so", RTLD_LAZY);
 			sscanf(wrapper_buf, "%s%d", wrapper_func[1], &wrapper_num);
-			wrapper = (int (*)()) dlsym(handle, wrapper_buf);
-			wrapper();
-			wrapper_num++;
+			/* wrapper = (int (*)()) dlsym(handle, wrapper_buf); */
+			/* wrapper(); */
+			/* wrapper_num++; */
 		}
   }
 }
