@@ -9,7 +9,7 @@ static void os_run() {
 #ifndef TEST
     putch(*s == '*' ? '0' + cpu_current() : *s);
 #else
-		/* putchar(*s == '*' ? '0' + cpu_current() : *s); */
+		putchar(*s == '*' ? '0' + cpu_current() : *s);
 #endif
   }
   while (1) ;
