@@ -52,6 +52,9 @@ int main(int argc, char *argv[]) {
 		int len = strlen(line);
 		if (len >= 3 && !strncmp(line, "int", 3)) {
 			// function define
+			wrapper_fd = fopen(wrapper_filec, "a");
+			fprintf(wrapper_fd, "\n%s\n", line);
+			fclose(wrapper_fd);
 		}
 		else {
 			// expression
