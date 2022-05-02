@@ -65,15 +65,20 @@ int main(int argc, char *argv[]) {
 
 			compile();
 			handle = dlopen(wrapper_fileso, RTLD_LAZY);
+			if (!handle) {
+				printf("handle error\n");
+				continue;
+			}
 			sprintf(wrapper_buf, "%s%d", wrapper_func[1], wrapper_num);
 			wrapper = (int (*)()) dlsym(handle, wrapper_buf);
 			if (!wrapper) {
-				printf("error\n");
+				printf("wrapper error\n");
 			}
 			else {
 				printf("%d\n", wrapper());
 			}
 			wrapper_num++;
+			dlclose(handle);
 		}
   }
 }
