@@ -32,9 +32,11 @@ int main(int argc, char *argv[]) {
 			// expression
 			fp = fopen(file_path, "a");
 			fprintf(fp, "%s%d%s%s%s", wrapper[0], wrapper_num, wrapper[1], line, wrapper[2]);
+			fclose(fp);
 			wrapper_num++;
 		}
 
     printf("Got %zu chars.\n", strlen(line)); // ??
   }
+
 }
