@@ -11,16 +11,17 @@ static char *wrapper_func[] = {
 static char wrapper_file[] = "/tmp/crepl_tmp.c";
 static FILE *wrapper_fd;
 static char *const gcc_argv[] = {
-	wrapper_file,
+	"gcc",
 	"-fPIC",
 	"-shared",
+	wrapper_file,
 	"-o /tmp/crepl_tmp.so",
 	NULL
 };
 
 void compile() {
 	if (fork() == 0) {
-		execvp("/usr/bin/gcc", gcc_argv);
+		execvp("gcc", gcc_argv);
 		perror("gcc error");
 		exit(-1);
 	}
