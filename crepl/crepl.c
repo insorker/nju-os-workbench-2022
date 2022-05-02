@@ -11,9 +11,9 @@ static char *wrapper_func[] = {
 static char wrapper_file[] = "/tmp/crepl_tmp.c";
 static FILE *wrapper_fd;
 static char *const gcc_argv[] = {
+	wrapper_file,
 	"-fPIC",
 	"-shared",
-	wrapper_file,
 	"-o /tmp/crepl_tmp.so",
 	NULL
 };
