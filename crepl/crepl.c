@@ -20,7 +20,7 @@ static char *const gcc_argv[] = {
 
 void compile() {
 	if (fork() == 0) {
-		execvp("gcc", gcc_argv);
+		execvp("/usr/lib/ccache/gcc", gcc_argv);
 		perror("gcc error");
 		exit(-1);
 	}
