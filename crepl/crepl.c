@@ -16,7 +16,7 @@ static char *const gcc_argv[] = {
 	"-fPIC",
 	"-shared",
 	wrapper_file,
-	"-o /tmp/crepl_tmp.so",
+	"-o crepl_tmp.so",
 	NULL
 };
 
