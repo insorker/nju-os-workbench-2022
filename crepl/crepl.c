@@ -6,7 +6,7 @@
 
 static int wrapper_num;
 static char *wrapper_func[] = {
-	"int __expr_wrapper_", "(){return ", ";}\n",
+	"int ", "__expr_wrapper_", "(){return ", ";}\n",
 };
 static char wrapper_file[] = "crepl_tmp";
 static FILE *wrapper_fd;
@@ -46,13 +46,13 @@ int main(int argc, char *argv[]) {
 		else {
 			// expression
 			wrapper_fd = fopen(wrapper_file, "a");
-			fprintf(wrapper_fd, "%s%d%s%s%s",
-					wrapper_func[0], wrapper_num, wrapper_func[1], line, wrapper_func[2]);
+			fprintf(wrapper_fd, "%s%s%d%s%s%s",
+					wrapper_func[0], wrapper_func[1], wrapper_num, wrapper_func[2], line, wrapper_func[3]);
 			fclose(wrapper_fd);
 
 			compile();
 			handle = dlopen("./crepl_tmp.so", RTLD_LAZY);
-			sscanf(wrapper_buf, "%s%d", "__expr_wrapper_", &wrapper_num);
+			sscanf(wrapper_buf, "%s%d", wrapper_func[1], &wrapper_num);
 			wrapper = (int (*)()) dlsym(handle, wrapper_buf);
 			wrapper();
 			wrapper_num++;
