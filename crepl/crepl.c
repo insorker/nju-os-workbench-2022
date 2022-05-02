@@ -7,8 +7,14 @@ int main(int argc, char *argv[]) {
     printf("crepl> ");
     fflush(stdout);
     if (!fgets(line, sizeof(line), stdin)) {
+			// error
       break;
     }
+		int len = strlen(line);
+		if (len >= 3 && strncmp(line, "int", 3)) {
+			printf("%s\n", line);
+		}
+
     printf("Got %zu chars.\n", strlen(line)); // ??
   }
 }
