@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
       break;
     }
 		int len = strlen(line);
-		if (len >= 3 && strncmp(line, "int", 3)) {
+		if (len >= 3 && !strncmp(line, "int", 3)) {
 			printf("%s\n", line);
 		}
 
