@@ -3,6 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <dlfcn.h>
+#include <sys/wait.h>
 
 static int wrapper_num;
 static char *wrapper_func[] = {
@@ -25,6 +26,7 @@ void compile() {
 		perror("gcc error");
 		exit(-1);
 	}
+	wait(NULL);
 }
 
 int main(int argc, char *argv[]) {
