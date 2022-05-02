@@ -19,6 +19,7 @@ static char *const gcc_argv[] = {
 
 void compile() {
 	execvp("gcc", gcc_argv);
+	printf("error\n");
 }
 
 int main(int argc, char *argv[]) {
