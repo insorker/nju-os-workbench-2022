@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
 					wrapper_func[0], wrapper_func[1], wrapper_num, wrapper_func[2], line, wrapper_func[3]);
 			fclose(wrapper_fd);
 
-			/* compile(); */
+			compile();
 			/* handle = dlopen("./crepl_tmp.so", RTLD_LAZY); */
 			/* sscanf(wrapper_buf, "%s%d", wrapper_func[1], &wrapper_num); */
 			/* wrapper = (int (*)()) dlsym(handle, wrapper_buf); */
