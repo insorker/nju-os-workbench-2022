@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
 				printf("error\n");
 			}
 			else {
-				wrapper();
+				printf("%d\n", wrapper());
 			}
 			wrapper_num++;
 		}
