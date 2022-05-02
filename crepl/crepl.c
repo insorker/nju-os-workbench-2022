@@ -8,7 +8,7 @@ static int wrapper_num;
 static char *wrapper_func[] = {
 	"int ", "__expr_wrapper_", "(){return ", ";}\n",
 };
-static char wrapper_file[] = "/tmp/crepl_tmp";
+static char wrapper_file[] = "/tmp/crepl_tmp.c";
 static FILE *wrapper_fd;
 static char *const gcc_argv[] = {
 	"-fPIC",
