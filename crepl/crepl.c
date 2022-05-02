@@ -14,14 +14,13 @@ static char *const gcc_argv[] = {
 	"-fPIC",
 	"-shared",
 	wrapper_file,
-	"-o crepl_tmp.so"
+	"-o /tmp/crepl_tmp.so"
 };
 
 void compile() {
 	if (fork() == 0) {
 		execvp("gcc", gcc_argv);
 		perror("gcc error");
-		printf("error\n");
 		exit(-1);
 	}
 }
