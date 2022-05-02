@@ -1,42 +1,61 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+#include <dlfcn.h>
 
 static int wrapper_num;
-static char *wrapper[] = {
+static char *wrapper_func[] = {
 	"int __expr_wrapper_", "(){return ", ";}\n",
 };
-static char *file_path = "/tmp/crepl_tmp";
+static char wrapper_file[] = "crepl_tmp";
+static FILE *wrapper_fd;
+static char *const gcc_argv[] = {
+	"-fPIC",
+	"-shared",
+	"crepl_tmp",
+	"-o crepl_tmp.so"
+};
 
-/* #define wrapper_assemble() \ */
-/*   (wrapper[0] #wrapper_num) */
-#define wrapper_assemble(a, b) \
-	b
+void compile() {
+	execvp("gcc", gcc_argv);
+}
 
 int main(int argc, char *argv[]) {
-	FILE *fp = fopen(file_path, "w");
-	fclose(fp);
+	// empty the file
+	wrapper_fd = fopen(wrapper_file, "w");
+	fclose(wrapper_fd);
+
   static char line[4096];
+	void *handle;
+	int (*wrapper)();
+	char wrapper_buf[100];
 	
   while (1) {
     printf("crepl> ");
     fflush(stdout);
     if (!fgets(line, sizeof(line), stdin)) {
-			// error
+			// read failed
       break;
     }
+
 		int len = strlen(line);
 		if (len >= 3 && !strncmp(line, "int", 3)) {
 			// function define
 		}
 		else {
 			// expression
-			fp = fopen(file_path, "a");
-			fprintf(fp, "%s%d%s%s%s", wrapper[0], wrapper_num, wrapper[1], line, wrapper[2]);
-			fclose(fp);
+			wrapper_fd = fopen(wrapper_file, "a");
+			fprintf(wrapper_fd, "%s%d%s%s%s",
+					wrapper_func[0], wrapper_num, wrapper_func[1], line, wrapper_func[2]);
+			fclose(wrapper_fd);
+
+			compile();
+			handle = dlopen("./crepl_tmp.so", RTLD_LAZY);
+			sscanf(wrapper_buf, "%s%d", "__expr_wrapper_", &wrapper_num);
+			wrapper = (int (*)()) dlsym(handle, wrapper_buf);
+			wrapper();
 			wrapper_num++;
 		}
-
-    printf("Got %zu chars.\n", strlen(line)); // ??
   }
-
 }
