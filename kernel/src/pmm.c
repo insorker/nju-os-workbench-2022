@@ -73,12 +73,23 @@ static size_t hb_check_size(size_t size) {
 	return 0;
 }
 
-// addr in heap range
+// addr in heap head range
 //			=> return 0
 // else => return 1
-static size_t hb_check_addr(void *addr) {
+static size_t hb_check_cont_addr(void *addr) {
 	if (addr <  HB_cont_base ||
 			addr >= HB_cont_base + HB_number * HB_WHOL_SIZE) {
+		return 1;
+	}
+	return 0;
+}
+
+// addr in heap cont range
+//			=> return 0
+// else => return 1
+static size_t hb_check_head_addr(void *addr) {
+	if (addr <  HB_head_base ||
+			addr >= HB_cont_base) {
 		return 1;
 	}
 	return 0;
@@ -274,7 +285,7 @@ static void *kalloc(size_t size) {
 				while (((char *)(hb_next->head))[1] == 0 && (j - i + 1) * HB_MAX < size) {
 					j++;
 					hb_next = (heap_block *)(HB_head_base + j * sizeof(heap_block));	
-					panic_on(hb_check_addr(hb_next), "invalid address");
+					panic_on(hb_check_head_addr(hb_next), "invalid address");
 				}
 
 				// if allocate success
@@ -311,7 +322,7 @@ static void *kalloc(size_t size) {
 
 // free memory
 static void kfree(void *ptr) {
-	panic_on(hb_check_addr(ptr), "free invalid addr");
+	panic_on(hb_check_cont_addr(ptr), "free invalid addr");
 
 	uintptr_t addr = (uintptr_t)ptr - (uintptr_t)HB_cont_base;
 	// addr should be times of HB_MIN
