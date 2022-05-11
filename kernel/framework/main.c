@@ -6,7 +6,7 @@ void alloc(int sz) {
 	uintptr_t align = a & -a;
 
 	printf("Alloc %d -> %p align = %d\n", sz, a, align);
-	assert(a && align >= sz);
+	assert(a >= sz);
 }
 
 void pmm_test() {
