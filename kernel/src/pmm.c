@@ -193,7 +193,7 @@ static size_t hb_free(heap_block *hb, size_t idx, size_t size, void *addr) {
 	}
 
 	// free successfully
-	if (hb_idx2addr(hb, idx) == addr) {
+	if (hb->head[idx] == 1 && hb_idx2addr(hb, idx) == addr) {
 		if (hb->head[idx] == 1) {
 #ifdef KALLOC_CHECK
 			printf("FREE:  idx: %d size: %d address: %p\n",
