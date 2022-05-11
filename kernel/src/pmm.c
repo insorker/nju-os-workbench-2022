@@ -208,7 +208,8 @@ static void kinit() {
 	HB_number    = pmsize / (HB_WHOL_SIZE + sizeof(heap_block));
 	HB_head_base = heap.start;
 	HB_cont_base = heap.start + HB_number * sizeof(heap_block);
-	printf("kinit:\nHB_number: %ld\nHB_head_base: %p\nHB_cont_base: %p\n");
+	printf("kinit:\nHB_number: %ld\nHB_head_base: %p\nHB_cont_base: %p\n",
+			HB_number, HB_head_base, HB_cont_base);
 	
 	// initialize each HB
 	for (size_t i = 0; i < HB_number; i++) {
