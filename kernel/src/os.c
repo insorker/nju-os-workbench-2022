@@ -17,8 +17,14 @@ void alloc_continuous(int sz) {
 	for (int i = 0; i < 100; i++) { a[i] = alloc(sz); }
 	for (int i = 0; i < 100; i++) { free(a[i]); }
 }
+void alloc_too_many(int sz) {
+	void *a[1 << 13];
+	for (int i = 0; i < 1 << 13; i++) { a[i] = alloc(sz); }
+	for (int i = 0; i < 1 << 13; i++) { free(a[i]); }
+}
 void pmm_test() {
 	/* alloc_and_free(); */
+	alloc_continuous(1);
 	alloc_continuous(1);
 	alloc_continuous(17);
 }
