@@ -346,7 +346,7 @@ static void kfree(void *ptr) {
 #endif
 			hb->head[1] = 0;
 			hb->stat = 0;
-			hb += sizeof(heap_block);
+			hb += 1;
 
 			printf("%d\n", k);
 			printf("%p\n", hb->cont);
