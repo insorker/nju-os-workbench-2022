@@ -12,106 +12,32 @@
 #define HB_CONT_SIZE HB_MAX
 #define HB_WHOL_SIZE (HB_HEAD_SIZE + HB_CONT_SIZE)
 
+// use HB to represent heap block
 typedef struct heap_block {
-	void *head;
-	void *cont;
-	char next;
+	char *head;		// head infomation
+	void *cont;		// content address
+	char stat;		// 0: one HB
+								// 1: start of continuous HB
+								// 2: in continuous HB
+								// 3: end of continuous HB
 } heap_block;
-static size_t heap_block_number;
-static void  *heap_block_start;
-
-static void hb_init(heap_block *hb, void *start) {
-	hb->head = start;
-	hb->cont = start + HB_HEAD_SIZE;
-	hb->next = 0;
-
-	memset(hb->head, 0, HB_HEAD_SIZE);
-}
-
-static size_t hb_check_size(size_t size) {
-	if (size >= heap_block_number * HB_WHOL_SIZE) {
-		return 1;
-	}
-	return 0;
-}
-
-static size_t hb_check_addr(void *addr) {
-	if (addr <  heap_block_start ||
-			addr >= heap_block_start + heap_block_number * HB_WHOL_SIZE) {
-		return 1;
-	}
-	return 0;
-}
+static size_t HB_number;		// number of HB
+static void  *HB_head_base;	// basic addr of HB head
+static void  *HB_cont_base; // basic addr of HB content
 
 static size_t lowbit(size_t x) {
 	return x & -x;
 }
 
-static size_t hb_roundup(size_t size) {
-	size_t new_size = 0, cnt = 0;
-	while (size) {
-		new_size = lowbit(size);
-		size -= lowbit(size);
-		cnt++;
+static size_t highbit(size_t x) {
+	size_t ret = lowbit(x);
+	while (x -= lowbit(x)) {
+		ret = lowbit(x);
 	}
-	if (cnt > 1) { new_size <<= 1; }
-	if (new_size < 16) { new_size = 16; }
-
-	return new_size;
+	return ret;
 }
 
-static void hb_pushup(char *head, size_t idx) {
-	size_t le = idx >> 1, ri = le + 1;
-	if (head[le] & 1 && head[ri] & 1) {
-		head[idx] = 3;
-	}
-	else if (head[le] == 0 && head[ri] == 0) {
-		head[idx] = 0;
-	}
-	else {
-		head[idx] = 2;
-	}
-}
-
-// 1 occupied
-// 2 not occupied, but splited
-// 3 occupied and splited
-static size_t hb_find(char *head, size_t idx, size_t block_size, size_t size) {
-	if (head[idx] == 1 || head[idx] == 3) {
-		return 0;
-	}
-
-	if (head[idx] == 0 && block_size == size) {
-		printf("HB FIND! %ld\n", idx);
-		head[idx] = 1;
-		return idx;
-	}
-
-	assert(block_size != 16);
-
-	size_t le = idx << 1, ri = le + 1;
-	if ((le = hb_find(head, le, block_size >> 1, size))) {
-		hb_pushup(head, idx);
-		return le;
-	}
-	if ((ri = hb_find(head, ri, block_size >> 1, size))) {
-		hb_pushup(head, idx);
-		return ri;
-	}
-
-	hb_pushup(head, idx);
-	return 0;
-}
-
-static void *hb_idx2addr(void *cont, size_t idx, size_t size) {
-	size_t start = idx;
-	for (size_t i = lowbit(start); start - i; ) {
-		start -= lowbit(start);
-		i = lowbit(start);
-	}
-	return cont + (idx - start) * size;
-}
-
+// head idx to size in HB
 static size_t hb_idx2size(size_t idx) {
 	size_t size = HB_MAX;
 	while (idx >>= 1) {
@@ -120,88 +46,247 @@ static size_t hb_idx2size(size_t idx) {
 	return size;
 }
 
-static size_t hb_free(char *head, void *cont, size_t idx, size_t size, void *addr) {
-	if (idx >= HB_HEAD_SIZE) { return 1; }
-	if (head[idx] == 1 && hb_idx2addr(cont, idx, size) == addr) {
-		printf("HB FREE! %ld\n", idx);
-		head[idx] = 0;
-		hb_pushup(head, idx);
+// head idx to address in HB
+static void *hb_idx2addr(heap_block *hb, size_t idx) {
+	size_t start = highbit(idx);
+	size_t size = hb_idx2size(idx);
+	return hb->cont + (idx - start) * size;
+}
+
+// init one HB
+static void hb_init(heap_block *hb, void *start) {
+	hb->head = start;
+	hb->cont = start + HB_HEAD_SIZE;
+	hb->stat = 0;
+
+	memset(hb->head, 0, HB_HEAD_SIZE);
+}
+
+// size less than heap size
+//			=> return 0
+// else => return 1
+static size_t hb_check_size(size_t size) {
+	if (size >= HB_number * HB_WHOL_SIZE) {
+		return 1;
+	}
+	return 0;
+}
+
+// addr in heap range
+//			=> return 0
+// else => return 1
+static size_t hb_check_addr(void *addr) {
+	if (addr <  HB_cont_base ||
+			addr >= HB_cont_base + HB_number * HB_WHOL_SIZE) {
+		return 1;
+	}
+	return 0;
+}
+
+// idx in HB head
+//			=> return 0
+// else => return 1
+static size_t hb_check_idx(size_t idx) {
+	if (idx < HB_HEAD_SIZE) {
 		return 0;
 	}
-	else {
-		if (!hb_free(head, cont, idx << 1, size >> 1, addr)) {
-			hb_pushup(head, idx);
-			return 0;
-		}
-		if (!hb_free(head, cont, (idx << 1) + 1, size >> 1, addr)) {
-			hb_pushup(head, idx);
-			return 0;
-		}
-	}
-
 	return 1;
 }
 
-static void kinit() {
-  uintptr_t pmsize = ((uintptr_t)heap.end - (uintptr_t)heap.start);
-	heap_block_number = pmsize / (HB_WHOL_SIZE + sizeof(heap_block));
-	heap_block_start  = heap.start + heap_block_number * sizeof(heap_block);
-	
-	for (size_t i = 0; i < heap_block_number; i++) {
-		heap_block *hb = (heap_block *)(heap.start + i * sizeof(heap_block));
-		hb_init(hb, heap_block_start + i * HB_WHOL_SIZE);
+// roundup size to 2^k
+static size_t hb_roundup(size_t size) {
+	size_t new_size = 1;
+
+	if (size <= 16) {
+		new_size = 16;
+	}
+	else {
+		while (new_size < size) {
+			new_size <<= 1;
+		}
+	}
+	panic_on(new_size < size, "size fault");
+
+	return new_size;
+}
+
+// pushup segment tree state
+static void hb_pushup(char *head, size_t idx) {
+	panic_on((hb_idx2size(idx) == HB_MIN), "shouldn't be pushup");
+	size_t le = idx << 1, ri = le + 1;
+
+	// if both free
+	if (head[le] == 0 && head[ri] == 0) {
+		head[idx] = 0;
+	}
+	// if both full
+	else if (head[le] & 1 && head[ri] & 1) {
+		head[idx] = 3;
+	}
+	// if both not full
+	else {
+		head[idx] = 2;
 	}
 }
 
+// 0 free
+// 1 occupied
+// 2 splited and not full
+// 3 splited and full
+// sucess: return index in head
+// fail:   return 0
+static size_t hb_find(char *head, size_t idx, size_t block_size, size_t size) {
+	// if size not enough
+	if (head[idx] == 1 || head[idx] == 3) {
+		return 0;
+	}
+
+	// find successfully
+	if (head[idx] == 0 && block_size == size) {
+		head[idx] = 1;
+		return idx;
+	}
+
+	// if size == HB_MIN, find failed
+	if (hb_idx2size(idx) == HB_MIN) {
+		return 0;
+	}
+
+	// find recursively
+	size_t le = idx << 1, ri = le + 1;
+	if ((le = hb_find(head, le, block_size >> 1, size))) {
+		// if left success
+		hb_pushup(head, idx);
+		return le;
+	}
+	if ((ri = hb_find(head, ri, block_size >> 1, size))) {
+		// if right success
+		hb_pushup(head, idx);
+		return ri;
+	}
+
+	// find recursively failed
+	return 0;
+}
+
+// free HB
+static size_t hb_free(heap_block *hb, size_t idx, size_t size, void *addr) {
+	// check if idx valid
+	if (hb_check_idx(idx)) {
+		panic_on(1, "idx not valid");
+		return 1;
+	}
+
+	// free successfully
+	if (hb->head[idx] == 1 && hb_idx2addr(hb, idx) == addr) {
+		printf("HB FREE! %ld\n", idx);
+		hb->head[idx] = 0;
+		hb_pushup(hb->head, idx);
+		return 0;
+	}
+	// free recursively
+	else {
+		if (!hb_free(hb, idx << 1, size >> 1, addr)) {
+			hb_pushup(hb->head, idx);
+			return 0;
+		}
+		if (!hb_free(hb, (idx << 1) + 1, size >> 1, addr)) {
+			hb_pushup(hb->head, idx);
+			return 0;
+		}
+	}
+
+	// free failed
+	return 1;
+}
+
+// initialize all of HB
+static void kinit() {
+  uintptr_t pmsize = ((uintptr_t)heap.end - (uintptr_t)heap.start);
+
+	// initialize global variable
+	HB_number    = pmsize / (HB_WHOL_SIZE + sizeof(heap_block));
+	HB_head_base = heap.start;
+	HB_cont_base = heap.start + HB_number * sizeof(heap_block);
+	
+	// initialize each HB
+	for (size_t i = 0; i < HB_number; i++) {
+		hb_init(
+			(heap_block *)(HB_head_base + i * sizeof(heap_block)),
+			HB_cont_base + i * HB_WHOL_SIZE
+		);
+	}
+}
+
+// allocate memory
 static void *kalloc(size_t size) {
 	size = hb_roundup(size);
 
 	if (!hb_check_size(size)) {
+		// allocate one HB
 		if (size <= HB_MAX) {
-			heap_block *hb_start;
+			heap_block *hb;
 			size_t hb_idx;
 
-			for (size_t i = 0; i < heap_block_number; i++) {
-				hb_start = (heap_block *)(heap.start + i * sizeof(heap_block));
-				hb_idx = hb_find(hb_start->head, 1, HB_MAX, size);
+			for (size_t i = 0; i < HB_number; i++) {
+				hb = (heap_block *)(HB_head_base + i * sizeof(heap_block));
+				hb_idx = hb_find(hb->head, 1, HB_MAX, size);
 				if (hb_idx) {
+					panic_on(
+						hb_idx2size(hb_idx) == size,
+						"size not equal"
+					);
 #ifdef TEST
-					printf("%ld\n", hb_idx2size(hb_idx));
-					printf("%p\n", hb_idx2addr(hb_start->cont, hb_idx, size));
+					printf("find size: %d, address: %p\n",
+						hb_idx2size(hb_idx),
+						hb_idx2addr(hb, hb_idx)
+					);
 #endif
-					return hb_idx2addr(hb_start->cont, hb_idx, size);
+					return hb_idx2addr(hb, hb_idx);
 				}
 			}
 		}
+		// allocate one more HB
 		else {
 			heap_block *hb_start, *hb_next;
 
-			for (size_t i = 0, j = 0; i < heap_block_number; i++) {
+			for (size_t i = 0, j = 0; i < HB_number; i++) {
 				j = i;
-				hb_start = (heap_block *)(heap.start + i * sizeof(heap_block));
+				hb_start = (heap_block *)(HB_head_base + i * sizeof(heap_block));
 				hb_next = hb_start;
 
+				// allocate continuous HB
 				while (((char *)(hb_next->head))[1] == 0 && (j - i + 1) * HB_MAX < size) {
 					j++;
-					hb_next = (heap_block *)(heap.start + j * sizeof(heap_block));	
+					hb_next = (heap_block *)(HB_head_base + j * sizeof(heap_block));	
+					panic_on(hb_check_addr(hb_next), "invalid address");
 				}
+
+				// if allocate success
 				if ((j - i + 1) * HB_MAX >= size) {
+					// mark
 					for (size_t k = i; k <= j; k++) {
-						hb_next = (heap_block *)(heap.start + k * sizeof(heap_block));	
+						hb_next = (heap_block *)(HB_head_base + k * sizeof(heap_block));	
+
+						// occupied
 						((char *)(hb_next->head))[1] = 1;
-						if (k != j) {
-							hb_next->next = 1;
+						// has next
+						if (k == i) {
+							hb_next->stat = 1;
+						}
+						else if (k == j) {
+							hb_next->stat = 3;
 						}
 						else {
-							hb_next->next = 0;
+							hb_next->stat = 2;
 						}
 #ifdef TEST
-						printf("%ld\n", k);
-						printf("%p\n", hb_idx2addr(hb_next->cont, k, size));
+						printf("find HB idx: %ld, HB addr: %p\n", hb_idx2addr(hb_next, k));
 #endif
 					}
 					return hb_start->cont;
 				}
+				// else continue;
 			}
 		}
 	}
@@ -209,22 +294,26 @@ static void *kalloc(size_t size) {
   return NULL;
 }
 
+// free memory
 static void kfree(void *ptr) {
-	if (hb_check_addr(ptr)) { assert(0); }
+	panic_on(hb_check_addr(ptr), "free invalid addr");
 
-	uintptr_t addr = (uintptr_t)ptr - (uintptr_t)heap_block_start;
-	if ((addr % HB_WHOL_SIZE - HB_HEAD_SIZE) % HB_MIN != 0) { assert(0); }
+	uintptr_t addr = (uintptr_t)ptr - (uintptr_t)HB_cont_base;
+	// addr should be times of HB_MIN
+	panic_on((addr % HB_WHOL_SIZE - HB_HEAD_SIZE) % HB_MIN != 0, "addr should be times of HB_MIN");
 
-	heap_block *hb = heap.start + addr / HB_WHOL_SIZE * sizeof(heap_block);
-	if (hb->next) {
-		while (hb->next) {
-			((char *)(hb->head))[1] = 0;
-			hb->next = 0;
+	heap_block *hb = HB_head_base + addr / HB_WHOL_SIZE * sizeof(heap_block);
+	if (hb->stat == 1) {
+		for (int k = 1; k <= 3; k = hb->stat) {
+			if (k == 3) k = 4;
+
+			hb->head[1] = 0;
+			hb->stat = 0;
 			hb += sizeof(heap_block);
 		}
 	}
 	else {
-		hb_free(hb->head, hb->cont, 1, HB_MAX, ptr);
+		hb_free(hb, 1, HB_MAX, ptr);
 	}
 }
 
