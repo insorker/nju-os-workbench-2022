@@ -25,13 +25,9 @@ static void os_run() {
 #if TEST_PMM
 	pmm_test();
 #endif
-/*   for (const char *s = "Hello World from CPU #*\n"; *s; s++) { */
-/* #ifndef TEST */
-/*     putch(*s == '*' ? '0' + cpu_current() : *s); */
-/* #else */
-/*     putchar(*s == '*' ? '0' + cpu_current() : *s); */
-/* #endif */
-/*   } */
+	for (const char *s = "Hello World from CPU #*\n"; *s; s++) {
+		putch(*s == '*' ? '0' + cpu_current() : *s);
+	}
 	while (1) ;
 }
 
