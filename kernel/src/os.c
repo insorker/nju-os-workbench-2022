@@ -10,7 +10,7 @@ void alloc_and_free() {
 	a = alloc(128);				free(a);
 	a = alloc(4096);			free(a);
 	a = alloc(1 << 16);		free(a);
-	a = alloc(1 << 17);		free(a);
+	/* a = alloc(1 << 17);		free(a); */
 }
 void pmm_test() {
 	alloc_and_free();
