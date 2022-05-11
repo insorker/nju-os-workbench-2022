@@ -136,6 +136,7 @@ static void hb_pushup(char *head, size_t idx) {
 // sucess: return index in head
 // fail:   return 0
 static size_t hb_find(char *head, size_t idx, size_t block_size, size_t size) {
+	printf("%d\n", head[idx]);
 	// if size not enough
 	if (head[idx] == 1 || head[idx] == 3) {
 		return 0;
