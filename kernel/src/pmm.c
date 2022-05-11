@@ -282,7 +282,7 @@ static void *kalloc(size_t size) {
 				hb_next = hb_start;
 
 				// allocate continuous HB
-				while (((char *)(hb_next->head))[1] == 0 && (j - i + 1) * HB_MAX < size) {
+				while (hb_next->head[1] == 0 && (j - i + 1) * HB_MAX < size) {
 					j++;
 					hb_next = (heap_block *)(HB_head_base + j * sizeof(heap_block));	
 					panic_on(hb_check_head_addr(hb_next), "invalid address");
@@ -297,7 +297,7 @@ static void *kalloc(size_t size) {
 						hb_next = (heap_block *)(HB_head_base + k * sizeof(heap_block));	
 
 						// occupied
-						((char *)(hb_next->head))[1] = 1;
+						hb_next->head[1] = 1;
 						// has next
 						if (k == i) {
 							hb_next->stat = 1;
@@ -335,6 +335,7 @@ static void kfree(void *ptr) {
 
 	heap_block *hb = HB_head_base + addr / HB_WHOL_SIZE * sizeof(heap_block);
 	if (hb->stat == 1) {
+		while (1);
 		for (int k = 1; k <= 3; k = hb->stat) {
 #ifdef KALLOC_CHECK
 			printf("FREE:  stat: %d address: %p\n",
