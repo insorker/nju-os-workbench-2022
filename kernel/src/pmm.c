@@ -136,7 +136,6 @@ static void hb_pushup(char *head, size_t idx) {
 // sucess: return index in head
 // fail:   return 0
 static size_t hb_find(char *head, size_t idx, size_t block_size, size_t size) {
-	printf("%d\n", head[idx]);
 	// if size not enough
 	if (head[idx] == 1 || head[idx] == 3) {
 		return 0;
@@ -209,6 +208,7 @@ static void kinit() {
 	HB_number    = pmsize / (HB_WHOL_SIZE + sizeof(heap_block));
 	HB_head_base = heap.start;
 	HB_cont_base = heap.start + HB_number * sizeof(heap_block);
+	printf("kinit:\nHB_number: %ld\nHB_head_base: %p\nHB_cont_base: %p\n");
 	
 	// initialize each HB
 	for (size_t i = 0; i < HB_number; i++) {
