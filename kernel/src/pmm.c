@@ -347,6 +347,8 @@ static void kfree(void *ptr) {
 			hb += sizeof(heap_block);
 
 			printf("%d\n", k);
+			printf("%p\n", hb->cont);
+			while (1);
 			if (k == 3) break;
 		}
 	}
