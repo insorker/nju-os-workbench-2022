@@ -12,8 +12,14 @@ void alloc_and_free() {
 	a = alloc(1 << 16);		free(a);
 	a = alloc(1 << 17);		free(a);
 }
+void alloc_continuous(int sz) {
+	void *a[100];
+	for (int i = 0; i < 100; i++) { a[i] = alloc(sz); }
+	for (int i = 0; i < 100; i++) { free(a[i]); }
+}
 void pmm_test() {
-	alloc_and_free();
+	/* alloc_and_free(); */
+	alloc_continuous(1);
 }
 #endif
 
