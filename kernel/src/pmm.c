@@ -234,14 +234,14 @@ static void *kalloc(size_t size) {
 				hb = (heap_block *)(HB_head_base + i * sizeof(heap_block));
 				hb_idx = hb_find(hb->head, 1, HB_MAX, size);
 				if (hb_idx) {
-					panic_on(
-						hb_idx2size(hb_idx) == size,
-						"size not equal"
-					);
-
 					printf("find size: %d, address: %p\n",
 						hb_idx2size(hb_idx),
 						hb_idx2addr(hb, hb_idx)
+					);
+
+					panic_on(
+						hb_idx2size(hb_idx) == size,
+						"size not equal"
 					);
 
 					return hb_idx2addr(hb, hb_idx);
