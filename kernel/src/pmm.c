@@ -337,15 +337,16 @@ static void kfree(void *ptr) {
 	if (hb->stat == 1) {
 		for (int k = 1; k <= 3; k = hb->stat) {
 #ifdef KALLOC_CHECK
-			printf("FREE:  stat: %d address: %p\n",
-				hb->stat,
-				hb_idx2addr(hb, 1)
-			);
+			/* printf("FREE:  stat: %d address: %p\n", */
+			/*   hb->stat, */
+			/*   hb_idx2addr(hb, 1) */
+			/* ); */
 #endif
 			hb->head[1] = 0;
 			hb->stat = 0;
 			hb += sizeof(heap_block);
 
+			printf("%d\n", k);
 			if (k == 3) break;
 		}
 	}
