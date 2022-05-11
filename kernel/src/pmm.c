@@ -240,7 +240,7 @@ static void *kalloc(size_t size) {
 					);
 
 					panic_on(
-						hb_idx2size(hb_idx) == size,
+						hb_idx2size(hb_idx) != size,
 						"size not equal"
 					);
 
