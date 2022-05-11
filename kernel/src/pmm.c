@@ -335,6 +335,8 @@ static void kfree(void *ptr) {
 
 	heap_block *hb = HB_head_base + addr / HB_WHOL_SIZE * sizeof(heap_block);
 	if (hb->stat == 1) {
+		printf("%p\n", hb);
+		printf("%x\n", HB_head_base);
 		for (int k = 1; k <= 3; k = hb->stat) {
 #ifdef KALLOC_CHECK
 			/* printf("FREE:  stat: %d address: %p\n", */
