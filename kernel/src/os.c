@@ -23,10 +23,14 @@ void alloc_too_many(int sz) {
 	for (int i = 0; i < 1 << 13; i++) { free(a[i]); }
 }
 void pmm_test() {
+	// 1
 	/* alloc_and_free(); */
-	alloc_continuous(1);
-	alloc_continuous(1);
-	alloc_continuous(17);
+	// 2
+	/* alloc_continuous(1); */
+	/* alloc_continuous(1); */
+	/* alloc_continuous(17); */
+	// 3
+	alloc_too_many(1);
 }
 #endif
 
