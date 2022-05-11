@@ -306,8 +306,11 @@ static void *kalloc(size_t size) {
 						else {
 							hb_next->stat = 2;
 						}
-#ifdef TEST
-						printf("find HB idx: %ld, HB addr: %p\n", hb_idx2addr(hb_next, k));
+#ifdef KALLOC_CHECK
+					printf("ALLOC: 1: %d size: %d address: %p\n",
+						hb_idx2size(1),
+						hb_idx2addr(hb_next, 1)
+					);
 #endif
 					}
 					return hb_start->cont;

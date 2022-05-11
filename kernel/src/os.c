@@ -32,7 +32,7 @@ static void os_run() {
 /*     putchar(*s == '*' ? '0' + cpu_current() : *s); */
 /* #endif */
 /*   } */
-/*   while (1) ; */
+	while (1) ;
 }
 
 MODULE_DEF(os) = {
