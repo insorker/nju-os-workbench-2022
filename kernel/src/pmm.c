@@ -290,6 +290,8 @@ static void *kalloc(size_t size) {
 
 				// if allocate success
 				if ((j - i + 1) * HB_MAX >= size) {
+					hb_next = hb_start;
+
 					// mark
 					for (size_t k = i; k <= j; k++) {
 						hb_next = (heap_block *)(HB_head_base + k * sizeof(heap_block));	
