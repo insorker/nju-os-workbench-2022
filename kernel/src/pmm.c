@@ -188,7 +188,7 @@ static size_t hb_find(char *head, size_t idx, size_t block_size, size_t size) {
 static size_t hb_free(heap_block *hb, size_t idx, size_t size, void *addr) {
 	// check if idx valid
 	if (hb_check_idx(idx)) {
-		panic_on(1, "idx not valid");
+		// not valid means not find
 		return 1;
 	}
 
