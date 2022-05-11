@@ -335,28 +335,19 @@ static void kfree(void *ptr) {
 
 	heap_block *hb = HB_head_base + addr / HB_WHOL_SIZE * sizeof(heap_block);
 	if (hb->stat == 1) {
-		printf("%p\n", hb);
-		printf("%x\n", HB_head_base);
 		for (int k = 1; k <= 3; k = hb->stat) {
 #ifdef KALLOC_CHECK
-			/* printf("FREE:  stat: %d address: %p\n", */
-			/*   hb->stat, */
-			/*   hb_idx2addr(hb, 1) */
-			/* ); */
+			printf("FREE:  stat: %d address: %p\n",
+				hb->stat,
+				hb_idx2addr(hb, 1)
+			);
 #endif
 			hb->head[1] = 0;
 			hb->stat = 0;
+			// pointer move 1
+			// !!! not "hb += sizeof(heap_block);"
 			hb += 1;
 
-			printf("%d\n", k);
-			printf("%p\n", hb->cont);
-			printf("stat: %d\n", ((heap_block *)HB_head_base)->stat);
-			printf("stat: %d\n", ((heap_block *)(HB_head_base + sizeof(heap_block)))->stat);
-
-			printf("%p\n", hb);
-			printf("%x\n", HB_head_base + sizeof(heap_block));
-
-			while (1);
 			if (k == 3) break;
 		}
 	}
