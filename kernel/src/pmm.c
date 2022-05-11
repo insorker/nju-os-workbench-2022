@@ -307,10 +307,10 @@ static void *kalloc(size_t size) {
 							hb_next->stat = 2;
 						}
 #ifdef KALLOC_CHECK
-					printf("ALLOC: idx: 1 size: %d address: %p\n",
-						HB_MAX,
-						hb_idx2addr(hb_next, 1)
-					);
+						printf("ALLOC: stat: %d address: %p\n",
+							hb_next->stat,
+							hb_idx2addr(hb_next, 1)
+						);
 #endif
 					}
 					return hb_start->cont;
@@ -335,10 +335,10 @@ static void kfree(void *ptr) {
 	if (hb->stat == 1) {
 		for (int k = 1; k <= 3; k = hb->stat) {
 #ifdef KALLOC_CHECK
-					printf("FREE:  idx: 1 size: %d address: %p\n",
-						HB_MAX,
-						hb_idx2addr(hb, 1)
-					);
+			printf("FREE:  stat: %d address: %p\n",
+				hb->stat,
+				hb_idx2addr(hb, 1)
+			);
 #endif
 			if (k == 3) k = 4;
 
