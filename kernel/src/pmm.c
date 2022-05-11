@@ -343,13 +343,12 @@ static void kfree(void *ptr) {
 				hb_idx2addr(hb, 1)
 			);
 #endif
+			while (cnt++);
 			if (k == 3) k = 4;
 
 			hb->head[1] = 0;
 			hb->stat = 0;
 			hb += sizeof(heap_block);
-			while (1);
-			while (cnt++);
 		}
 	}
 	else {
