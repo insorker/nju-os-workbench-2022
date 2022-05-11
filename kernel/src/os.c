@@ -20,6 +20,7 @@ void alloc_continuous(int sz) {
 void pmm_test() {
 	/* alloc_and_free(); */
 	alloc_continuous(1);
+	alloc_continuous(17);
 }
 #endif
 
