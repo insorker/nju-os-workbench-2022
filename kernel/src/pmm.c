@@ -335,7 +335,7 @@ static void kfree(void *ptr) {
 
 	heap_block *hb = HB_head_base + addr / HB_WHOL_SIZE * sizeof(heap_block);
 	if (hb->stat == 1) {
-		while (1);
+		int cnt = 0;
 		for (int k = 1; k <= 3; k = hb->stat) {
 #ifdef KALLOC_CHECK
 			printf("FREE:  stat: %d address: %p\n",
@@ -348,6 +348,7 @@ static void kfree(void *ptr) {
 			hb->head[1] = 0;
 			hb->stat = 0;
 			hb += sizeof(heap_block);
+			while (cnt++);
 		}
 	}
 	else {
