@@ -307,8 +307,8 @@ static void *kalloc(size_t size) {
 							hb_next->stat = 2;
 						}
 #ifdef KALLOC_CHECK
-					printf("ALLOC: 1: %d size: %d address: %p\n",
-						hb_idx2size(1),
+					printf("ALLOC: 1 size: %d address: %p\n",
+						HB_MAX,
 						hb_idx2addr(hb_next, 1)
 					);
 #endif
