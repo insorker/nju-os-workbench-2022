@@ -194,20 +194,15 @@ static size_t hb_free(heap_block *hb, size_t idx, size_t size, void *addr) {
 
 	// free successfully
 	if (hb->head[idx] == 1 && hb_idx2addr(hb, idx) == addr) {
-		if (hb->head[idx] == 1) {
 #ifdef KALLOC_CHECK
-			printf("FREE:  idx: %d size: %d address: %p\n",
-				idx,
-				hb_idx2size(idx),
-				hb_idx2addr(hb, idx)
-			);
+		printf("FREE:  idx: %d size: %d address: %p\n",
+			idx,
+			hb_idx2size(idx),
+			hb_idx2addr(hb, idx)
+		);
 #endif
-			hb->head[idx] = 0;
-			hb_pushup(hb->head, idx);
-		}
-		else {
-			panic_on(hb->head[idx] != 1, "free addr error");
-		}
+		hb->head[idx] = 0;
+		hb_pushup(hb->head, idx);
 		return 0;
 	}
 	// free recursively
@@ -357,7 +352,7 @@ static void kfree(void *ptr) {
 		}
 	}
 	else {
-		hb_free(hb, 1, HB_MAX, ptr);
+		panic_on(hb_free(hb, 1, HB_MAX, ptr), "free addr error");
 	}
 }
 
