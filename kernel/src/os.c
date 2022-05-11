@@ -24,11 +24,11 @@ void alloc_too_many(int sz) {
 }
 void pmm_test() {
 	// 1
-	alloc_and_free();
+	/* alloc_and_free(); */
 	// 2
-	/* alloc_continuous(1); */
-	/* alloc_continuous(1); */
-	/* alloc_continuous(17); */
+	alloc_continuous(1);
+	alloc_continuous(1);
+	alloc_continuous(17);
 	// 3
 	/* alloc_too_many(1); */
 }
