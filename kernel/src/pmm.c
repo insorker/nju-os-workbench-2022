@@ -6,6 +6,7 @@
 #include <string.h>
 #endif
 
+#define KALLOC_CHECK 1
 #define HB_MAX (1 << 16)
 #define HB_MIN (1 << 4)
 #define HB_HEAD_SIZE (2 * HB_MAX / HB_MIN + 1)
@@ -179,7 +180,13 @@ static size_t hb_free(heap_block *hb, size_t idx, size_t size, void *addr) {
 
 	// free successfully
 	if (hb->head[idx] == 1 && hb_idx2addr(hb, idx) == addr) {
-		printf("HB FREE! %ld\n", idx);
+#ifdef KALLOC_CHECK
+		printf("idx: %d size: %d address: %p\n",
+			idx,
+			hb_idx2size(idx),
+			hb_idx2addr(hb, idx)
+		);
+#endif
 		hb->head[idx] = 0;
 		hb_pushup(hb->head, idx);
 		return 0;
@@ -234,10 +241,13 @@ static void *kalloc(size_t size) {
 				hb = (heap_block *)(HB_head_base + i * sizeof(heap_block));
 				hb_idx = hb_find(hb->head, 1, HB_MAX, size);
 				if (hb_idx) {
-					printf("find size: %d, address: %p\n",
+#ifdef KALLOC_CHECK
+					printf("idx: %d size: %d address: %p\n",
+						hb_idx,
 						hb_idx2size(hb_idx),
 						hb_idx2addr(hb, hb_idx)
 					);
+#endif
 
 					panic_on(
 						hb_idx2size(hb_idx) != size,

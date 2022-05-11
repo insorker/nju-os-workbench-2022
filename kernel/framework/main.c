@@ -2,11 +2,8 @@
 #include <klib.h>
 
 void alloc(int sz) {
-	uintptr_t a = (uintptr_t)pmm->alloc(sz);
-	uintptr_t align = a & -a;
-
-	printf("Alloc %d -> %p align = %d\n", sz, a, align);
-	assert(a >= sz);
+	void *a = pmm->alloc(sz);
+	pmm->free(a);
 }
 
 void pmm_test() {
