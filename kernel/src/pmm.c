@@ -348,6 +348,8 @@ static void kfree(void *ptr) {
 
 			printf("%d\n", k);
 			printf("%p\n", hb->cont);
+			printf("stat: %d\n", ((heap_block *)HB_head_base)->stat);
+			printf("stat: %d\n", ((heap_block *)(HB_head_base + sizeof(heap_block)))->stat);
 			while (1);
 			if (k == 3) break;
 		}
