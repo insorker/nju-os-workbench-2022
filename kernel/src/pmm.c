@@ -113,7 +113,10 @@ static size_t hb_roundup(size_t size) {
 
 // pushup segment tree state
 static void hb_pushup(char *head, size_t idx) {
-	panic_on((hb_idx2size(idx) == HB_MIN), "shouldn't pushup");
+	if (hb_idx2size(idx) == HB_MIN) {
+		return;
+		panic_on(1, "shouldn't pushup");
+	}
 	size_t le = idx << 1, ri = le + 1;
 
 	// if both free
