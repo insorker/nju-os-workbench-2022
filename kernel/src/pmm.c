@@ -113,7 +113,7 @@ static size_t hb_roundup(size_t size) {
 
 // pushup segment tree state
 static void hb_pushup(char *head, size_t idx) {
-	panic_on((hb_idx2size(idx) == HB_MIN), "shouldn't be pushup");
+	panic_on((hb_idx2size(idx) == HB_MIN), "shouldn't pushup");
 	size_t le = idx << 1, ri = le + 1;
 
 	// if both free
@@ -181,7 +181,7 @@ static size_t hb_free(heap_block *hb, size_t idx, size_t size, void *addr) {
 	// free successfully
 	if (hb->head[idx] == 1 && hb_idx2addr(hb, idx) == addr) {
 #ifdef KALLOC_CHECK
-		printf("idx: %d size: %d address: %p\n",
+		printf("Alloc: idx: %d size: %d address: %p\n",
 			idx,
 			hb_idx2size(idx),
 			hb_idx2addr(hb, idx)
@@ -242,7 +242,7 @@ static void *kalloc(size_t size) {
 				hb_idx = hb_find(hb->head, 1, HB_MAX, size);
 				if (hb_idx) {
 #ifdef KALLOC_CHECK
-					printf("idx: %d size: %d address: %p\n",
+					printf("Free:  idx: %d size: %d address: %p\n",
 						hb_idx,
 						hb_idx2size(hb_idx),
 						hb_idx2addr(hb, hb_idx)
