@@ -1,10 +1,4 @@
 #include <common.h>
-#include <assert.h>
-#ifdef TEST
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#endif
 
 #define KALLOC_CHECK 1
 #define HB_MAX (1 << 16)
@@ -356,24 +350,12 @@ static void kfree(void *ptr) {
 	}
 }
 
-#ifdef TEST
-#define HEAP_SIZE (1 << 27)
-static void pmm_init() {
-	char* ptr = malloc(HEAP_SIZE);
-	heap.start = ptr;
-	heap.end   = ptr + HEAP_SIZE;
-	printf("Got %d MiB heap: [%p, %p)\n", HEAP_SIZE >> 20, heap.start, heap.end);
-
-	kinit();
-}
-#else
 static void pmm_init() {
   uintptr_t pmsize = ((uintptr_t)heap.end - (uintptr_t)heap.start);
   printf("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
 
 	kinit();
 }
-#endif
 
 MODULE_DEF(pmm) = {
   .init  = pmm_init,
