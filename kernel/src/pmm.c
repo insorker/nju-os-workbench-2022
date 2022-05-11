@@ -338,6 +338,7 @@ static void kfree(void *ptr) {
 		int cnt = 0;
 		for (int k = 1; k <= 3; k = hb->stat) {
 #ifdef KALLOC_CHECK
+			printf("%d %d\n", k, cnt);
 			/* printf("FREE:  stat: %d address: %p\n", */
 			/*   hb->stat, */
 			/*   hb_idx2addr(hb, 1) */
