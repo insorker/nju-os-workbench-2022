@@ -221,6 +221,7 @@ static void kinit() {
 // allocate memory
 static void *kalloc(size_t size) {
 	size = hb_roundup(size);
+	printf("%d\n", size);
 
 	if (!hb_check_size(size)) {
 		// allocate one HB
