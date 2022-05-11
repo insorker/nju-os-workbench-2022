@@ -5,6 +5,7 @@ static void os_init() {
 }
 
 static void os_run() {
+	pmm->alloc(1);
 /*   for (const char *s = "Hello World from CPU #*\n"; *s; s++) { */
 /* #ifndef TEST */
 /*     putch(*s == '*' ? '0' + cpu_current() : *s); */

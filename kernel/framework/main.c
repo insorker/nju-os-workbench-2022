@@ -21,9 +21,9 @@ void pmm_test() {
 
 int main() {
   ioe_init();
+	os->init();
 	pmm_test();
 	/* cte_init(os->trap); */
-	os->init();
   /* mpe_init(os->run); */
   return 1;
 }
