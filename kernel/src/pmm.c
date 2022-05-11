@@ -221,7 +221,6 @@ static void kinit() {
 // allocate memory
 static void *kalloc(size_t size) {
 	size = hb_roundup(size);
-	printf("%d\n", size);
 
 	if (!hb_check_size(size)) {
 		// allocate one HB
@@ -237,12 +236,12 @@ static void *kalloc(size_t size) {
 						hb_idx2size(hb_idx) == size,
 						"size not equal"
 					);
-#ifdef TEST
+
 					printf("find size: %d, address: %p\n",
 						hb_idx2size(hb_idx),
 						hb_idx2addr(hb, hb_idx)
 					);
-#endif
+
 					return hb_idx2addr(hb, hb_idx);
 				}
 			}
