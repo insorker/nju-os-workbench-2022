@@ -12,7 +12,7 @@ include ../Makefile.lab
 image: git
 
 test: git
-	@gcc $(shell find src/ -name "*.c")  \
+	@gcc $(shell find src/ -name "*.c" | grep -v "dev" | grep -v "kmt")  \
 		$(shell find test/ -name "*.c") \
 		-Iframework -Itest -DTEST -lpthread \
 		-o build/test

@@ -14,7 +14,10 @@ HB_HEAD_SIZE	src/pmm.c	11;"	d	file:
 HB_MAX	src/pmm.c	9;"	d	file:
 HB_MIN	src/pmm.c	10;"	d	file:
 HB_WHOL_SIZE	src/pmm.c	13;"	d	file:
-HEAP_SIZE	src/pmm.c	232;"	d	file:
+HB_cont_base	src/pmm.c	/^static void  *HB_cont_base; \/\/ basic addr of HB content$/;"	v	file:
+HB_head_base	src/pmm.c	/^static void  *HB_head_base;	\/\/ basic addr of HB head$/;"	v	file:
+HB_number	src/pmm.c	/^static size_t HB_number;		\/\/ number of HB$/;"	v	file:
+HEAP_SIZE	src/pmm.c	321;"	d	file:
 INC_PATH	Makefile	/^INC_PATH       := include\/ framework\/$/;"	m
 INIT	src/dev/dev.c	37;"	d	file:
 MODULE	framework/kernel.h	/^MODULE(dev) {$/;"	f
@@ -37,6 +40,7 @@ TTY_COOK_BUF_SZ	src/dev/dev_tty.c	4;"	d	file:
 T_DEAD	test/thread.h	/^enum { T_FREE = 0, T_LIVE, T_DEAD, };$/;"	e	enum:__anon6
 T_FREE	test/thread.h	/^enum { T_FREE = 0, T_LIVE, T_DEAD, };$/;"	e	enum:__anon6
 T_LIVE	test/thread.h	/^enum { T_FREE = 0, T_LIVE, T_DEAD, };$/;"	e	enum:__anon6
+alloc	framework/main.c	/^void alloc(int sz) {$/;"	f
 alt	include/devices.h	/^  uint32_t ctrl: 1, alt: 1;$/;"	m	struct:input_event
 alt_down	include/devices.h	/^  int capslock, shift_down[2], ctrl_down[2], alt_down[2];$/;"	m	struct:__anon1
 blk_read	src/dev/dev_sd.c	/^static void blk_read(void *buf, int blkno, int blkcnt) {$/;"	f	file:
@@ -51,7 +55,7 @@ ch	include/devices.h	/^  unsigned char ch;$/;"	m	struct:character
 character	include/devices.h	/^struct character {$/;"	s
 cleanup	test/thread.h	/^__attribute__((destructor)) void cleanup() {$/;"	f
 columns	include/devices.h	/^  int lines, columns, size;$/;"	m	struct:__anon3
-cont	src/pmm.c	/^	void *cont;$/;"	m	struct:heap_block	file:
+cont	src/pmm.c	/^	void *cont;		\/\/ content address$/;"	m	struct:heap_block	file:
 cooked	include/devices.h	/^  sem_t lock, cooked;$/;"	m	struct:__anon3
 create	test/thread.h	/^void create(void *fn) {$/;"	f
 ctrl	include/devices.h	/^  uint32_t ctrl: 1, alt: 1;$/;"	m	struct:input_event
@@ -95,21 +99,21 @@ front	include/devices.h	/^  char *buf, *end, *front, *rear;$/;"	m	struct:tty_que
 front	include/devices.h	/^  int front, rear;$/;"	m	struct:__anon1
 handler_t	framework/kernel.h	/^typedef Context *(*handler_t)(Event, Context *);$/;"	t
 hb_check_addr	src/pmm.c	/^static size_t hb_check_addr(void *addr) {$/;"	f	file:
+hb_check_idx	src/pmm.c	/^static size_t hb_check_idx(size_t idx) {$/;"	f	file:
 hb_check_size	src/pmm.c	/^static size_t hb_check_size(size_t size) {$/;"	f	file:
 hb_find	src/pmm.c	/^static size_t hb_find(char *head, size_t idx, size_t block_size, size_t size) {$/;"	f	file:
-hb_free	src/pmm.c	/^static size_t hb_free(char *head, void *cont, size_t idx, size_t size, void *addr) {$/;"	f	file:
-hb_idx2addr	src/pmm.c	/^static void *hb_idx2addr(void *cont, size_t idx, size_t size) {$/;"	f	file:
+hb_free	src/pmm.c	/^static size_t hb_free(heap_block *hb, size_t idx, size_t size, void *addr) {$/;"	f	file:
+hb_idx2addr	src/pmm.c	/^static void *hb_idx2addr(heap_block *hb, size_t idx) {$/;"	f	file:
 hb_idx2size	src/pmm.c	/^static size_t hb_idx2size(size_t idx) {$/;"	f	file:
 hb_init	src/pmm.c	/^static void hb_init(heap_block *hb, void *start) {$/;"	f	file:
 hb_pushup	src/pmm.c	/^static void hb_pushup(char *head, size_t idx) {$/;"	f	file:
 hb_roundup	src/pmm.c	/^static size_t hb_roundup(size_t size) {$/;"	f	file:
-head	src/pmm.c	/^	void *head;$/;"	m	struct:heap_block	file:
+head	src/pmm.c	/^	char *head;		\/\/ head infomation$/;"	m	struct:heap_block	file:
 heap	test/common.h	/^Area heap;$/;"	v
 heap_block	src/pmm.c	/^typedef struct heap_block {$/;"	s	file:
 heap_block	src/pmm.c	/^} heap_block;$/;"	t	typeref:struct:heap_block	file:
-heap_block_number	src/pmm.c	/^static size_t heap_block_number;$/;"	v	file:
-heap_block_start	src/pmm.c	/^static void  *heap_block_start;$/;"	v	file:
 height	include/devices.h	/^  uint32_t width, height;$/;"	m	struct:display_info
+highbit	src/pmm.c	/^static size_t highbit(size_t x) {$/;"	f	file:
 id	include/devices.h	/^  int id;$/;"	m	struct:device
 id	test/thread.h	/^  int id, status;$/;"	m	struct:thread
 info	include/devices.h	/^  struct display_info *info;$/;"	m	struct:__anon2	typeref:struct:__anon2::display_info
@@ -138,7 +142,6 @@ main	framework/main.c	/^int main() {$/;"	f
 main	test/test.c	/^int main() {$/;"	f
 metadata	include/devices.h	/^  uint32_t metadata;$/;"	m	struct:character
 name	include/devices.h	/^  const char *name;$/;"	m	struct:device
-next	src/pmm.c	/^	char next;$/;"	m	struct:heap_block	file:
 num_displays	include/devices.h	/^  uint32_t num_displays;$/;"	m	struct:display_info
 num_sprites	include/devices.h	/^  uint32_t num_textures, num_sprites;$/;"	m	struct:display_info
 num_textures	include/devices.h	/^  uint32_t num_textures, num_sprites;$/;"	m	struct:display_info
@@ -149,6 +152,7 @@ os_run	src/os.c	/^static void os_run() {$/;"	f	file:
 pixels	include/devices.h	/^  uint32_t pixels[TEXTURE_W * TEXTURE_H];$/;"	m	struct:texture
 pmm	src/pmm.c	/^MODULE_DEF(pmm) = {$/;"	v
 pmm_init	src/pmm.c	/^static void pmm_init() {$/;"	f	file:
+pmm_test	framework/main.c	/^void pmm_test() {$/;"	f
 pop_event	src/dev/dev_input.c	/^static struct input_event pop_event(input_t *in) {$/;"	f	file:
 ptr	include/devices.h	/^  void *ptr;$/;"	m	struct:device
 push_event	src/dev/dev_input.c	/^static void push_event(input_t *in, struct input_event ev) {$/;"	f	file:
@@ -173,6 +177,7 @@ spinlock_t	framework/kernel.h	/^typedef struct spinlock spinlock_t;$/;"	t	typere
 sprite	include/devices.h	/^struct sprite {$/;"	s
 sprites	include/devices.h	/^  struct sprite *sprites;$/;"	m	struct:__anon2	typeref:struct:__anon2::sprite
 start	test/common.h	/^	void *start, *end;$/;"	m	struct:__anon5
+stat	src/pmm.c	/^	char stat;		\/\/ 0: one HB$/;"	m	struct:heap_block	file:
 status	test/thread.h	/^  int id, status;$/;"	m	struct:thread
 task	include/os.h	/^struct task {$/;"	s
 task_t	framework/kernel.h	/^typedef struct task task_t;$/;"	t	typeref:struct:task
