@@ -348,6 +348,7 @@ static void kfree(void *ptr) {
 			hb->head[1] = 0;
 			hb->stat = 0;
 			hb += sizeof(heap_block);
+			while (1);
 			while (cnt++);
 		}
 	}
